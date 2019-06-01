@@ -3,28 +3,28 @@ package algorithm
 import genotype.Genotype
 
 
-class GeneticAlgorithm private(population: List[Genotype],
-                               numIter: Int,
-                               fitnessOp: Genotype => Float,
-                               selectionOp: List[(Genotype, Float)] => List[Genotype],
-                               crossOverOp: (Genotype, Genotype) => (Genotype, Genotype) = null,
-                               mutationOp: Genotype => Genotype = null,
-                               mutationProb: Float = 1) {
+class GeneticAlgorithm[T] private(population: List[Genotype[T]],
+                                  numIter: Int,
+                                  fitnessOp: Genotype[T] => Float,
+                                  selectionOp: List[(Genotype[T], Float)] => List[Genotype[T]],
+                                  crossOverOp: (Genotype[T], Genotype[T]) => (Genotype[T], Genotype[T]) = null,
+                                  mutationOp: Genotype[T] => Genotype[T] = null,
+                                  mutationProb: Float = 1) {
 
-    def run(): List[Genotype] = {
+    def run(): List[Genotype[T]] = {
         var curPop = population
-        for (i <- 0 until numIter) {
+        for (_ <- 0 until numIter) {
             curPop = selectionOp(evalPopulation(curPop))
         }
         selectFittest(curPop)
     }
 
-    private def evalPopulation(pop: List[Genotype]): List[(Genotype, Float)] = {
+    private def evalPopulation(pop: List[Genotype[T]]): List[(Genotype[T], Float)] = {
         population.map(genotype => (genotype, fitnessOp(genotype)))
     }
 
-    private def selectFittest(pop: List[Genotype]): List[Genotype] = {
-        pop.foldLeft((List.empty[Genotype], 0.0))((curr, genotype) => {
+    private def selectFittest(pop: List[Genotype[T]]): List[Genotype[T]] = {
+        pop.foldLeft((List.empty[Genotype[T]], 0.0))((curr, genotype) => {
             val (fittest, bestFitness) = curr
             val fitness = fitnessOp(genotype)
 
@@ -43,5 +43,3 @@ class GeneticAlgorithm private(population: List[Genotype],
     }
 
 }
-
-

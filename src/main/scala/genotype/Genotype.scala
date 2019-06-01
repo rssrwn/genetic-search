@@ -1,7 +1,12 @@
 package genotype
 
-trait Genotype {
 
-    def evaluate(): Float
+trait Genotype[T] extends Seq[T] {
+
+    override def length: Int
+
+    override def apply(idx: Int): T
+
+    override def iterator: Iterator[T]
 
 }
