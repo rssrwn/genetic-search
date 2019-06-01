@@ -4,7 +4,7 @@ import genotype.Genotype
 
 
 class GeneticAlgorithm private(population: List[Genotype],
-                               numIters: Int,
+                               numIter: Int,
                                fitnessOp: Genotype => Float,
                                selectionOp: List[(Genotype, Float)] => List[Genotype],
                                crossOverOp: (Genotype, Genotype) => (Genotype, Genotype) = null,
@@ -13,7 +13,7 @@ class GeneticAlgorithm private(population: List[Genotype],
 
     def run(): List[Genotype] = {
         var curPop = population
-        for (i <- 0 until numIters) {
+        for (i <- 0 until numIter) {
             curPop = selectionOp(evalPopulation(curPop))
         }
         selectFittest(curPop)
@@ -24,14 +24,22 @@ class GeneticAlgorithm private(population: List[Genotype],
     }
 
     private def selectFittest(pop: List[Genotype]): List[Genotype] = {
-        evalPopulation(pop).fold(null)((g1, g2) => {
-            if (g1._2 > g2._2) {
-                g1
+        pop.foldLeft((List.empty[Genotype], 0.0))((curr, genotype) => {
+            val (fittest, bestFitness) = curr
+            val fitness = fitnessOp(genotype)
+
+            if (fittest.isEmpty) {
+                (genotype :: fittest, fitness)
             } else {
-                g2
+                if (fitness > bestFitness) {
+                    (genotype :: Nil, fitness)
+                } else if (bestFitness == fitness) {
+                    (genotype :: fittest, bestFitness)
+                } else {
+                    curr
+                }
             }
         })._1
-        // TODO
     }
 
 }
