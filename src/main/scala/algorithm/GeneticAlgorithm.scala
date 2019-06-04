@@ -6,19 +6,41 @@ import util.Types.Population
 
 class GeneticAlgorithm[T](population: Population[T], numIter: Int, ops: GeneticAlgorithmOperators[T]) {
 
-    def run(): List[Genotype[T]] = {
+    def run(): Population[T] = {
         var curPop = population
         for (_ <- 0 until numIter) {
-            curPop = ops.selectionOp(evalPopulation(curPop))
+            curPop = select(curPop)
+            if (ops.containsCrossoverOp) {
+                curPop = crossover(curPop)
+            }
+            if (ops.containsMutationOp) {
+                curPop = mutate(curPop)
+            }
         }
         selectFittest(curPop)
     }
 
-    private def evalPopulation(pop: List[Genotype[T]]): List[(Genotype[T], Float)] = {
-        population.map(genotype => (genotype, ops.fitnessOp(genotype)))
+    private def select(pop: Population[T]): Population[T] = {
+        val eval = population.map(genotype => (genotype, ops.fitnessOp(genotype)))
+        ops.selectionOp(eval)
     }
 
-    private def selectFittest(pop: List[Genotype[T]]): List[Genotype[T]] = {
+    private def crossover(pop: Population[T]): Population[T] = {
+
+    }
+
+    private def mutate(pop: Population[T]): Population[T] = {
+        val r = scala.util.Random
+        pop.map(genotype => {
+            if (r.nextFloat() <= ops.mutationProb) {
+                ops.mutationOp(genotype)
+            } else {
+                genotype
+            }
+        })
+    }
+
+    private def selectFittest(pop: Population[T]): Population[T] = {
         pop.foldLeft((List.empty[Genotype[T]], 0.0))((curr, genotype) => {
             val (fittest, bestFitness) = curr
             val fitness = ops.fitnessOp(genotype)
