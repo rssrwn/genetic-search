@@ -14,10 +14,10 @@ trait Genotype[T] extends Seq[T] {
     /**
       * Create a new full genotype from two half genotypes. 'this' acts as the left half.
       * This function should only be called on split genotypes
-      * @param genotype The right half of the new genotype
+      * @param that The right half of the new genotype
       * @return A full genotype created from two halves
       */
-    def merge(genotype: Genotype[T]): Genotype[T]
+    def merge(that: Genotype[T]): Genotype[T]
 
     override def length: Int
 
