@@ -15,7 +15,7 @@ class GeneticAlgorithmBuilder[T] {
 
     def build(): GeneticAlgorithm[T] = {
         val ops = new GeneticAlgorithmOperators[T](fitnessOp, selectionOp, crossoverOp, mutationOp, mutationProb)
-        new GeneticAlgorithm[T](pop, numIterations, ops)
+        new GeneticAlgorithm[T](ops, numIterations)
     }
 
     def withPopulation(pop: Population[T]): GeneticAlgorithmBuilder[T] = {
