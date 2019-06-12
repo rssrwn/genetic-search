@@ -5,12 +5,12 @@ package genotype
   * Genotypes of binary strings
   * @param str Binary string to use as genotype, non-binary chars are ignored
   */
-class BinaryString(str: String) extends Genotype[Int] {
+class BinaryString(private val str: String) extends Genotype[Int] {
 
     private val binaryList: List[Int] = {
         str.toCharArray
-                .filterNot(c => c == '0' || c == '1')
-                .map(c => c.toInt)
+                .filter(c => c == '0' || c == '1')
+                .map(c => c.toString.toInt)
                 .toList
     }
 

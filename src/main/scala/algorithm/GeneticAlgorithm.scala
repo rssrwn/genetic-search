@@ -43,7 +43,7 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
                 newPop += elem
             } else {
                 if (i % 2 == 0) {
-                    val nextElem = shuffle(i+1)
+                    val nextElem = shuffle(i+1)._1
                     val (cross1, cross2) = ops.crossoverOp(elem, nextElem)
                     newPop += cross1
                     newPop += cross2

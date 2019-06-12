@@ -11,6 +11,6 @@ object Types {
     type FitnessOp[T] = Genotype[T] => Float
     type MutationOp[T] = Genotype[T] => Genotype[T]
     type SelectionOp[T] = EvalPopulation[T] => Population[T]
-    type CrossoverOp[T] = GenotypePair[T] => GenotypePair[T]
+    type CrossoverOp[T] = (Genotype[T], Genotype[T]) => GenotypePair[T]
 
 }
