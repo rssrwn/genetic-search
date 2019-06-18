@@ -17,4 +17,13 @@ trait Genotype[T] {
       */
     def merge(that: T): T
 
+    /**
+      * Mutate this particular genotype
+      * Default implementation does nothing
+      * @return Mutated genotype
+      */
+    def mutate: Genotype[T] = {
+        this
+    }
+
 }
