@@ -10,12 +10,10 @@ Factory for mutation operators
 object Mutations {
 
     // TODO move flipProb into mutate func
-    private def randBitFlip[T]: MutationOp[T] = {
-        genotype: Genotype[T] => {
+    val randBitFlip: MutationOp[BinaryString] = {
+        genotype: Genotype[BinaryString] => {
             genotype.mutate
         }
     }
-
-    val randBitFlip: MutationOp[BinaryString] = randBitFlip[BinaryString]
 
 }
