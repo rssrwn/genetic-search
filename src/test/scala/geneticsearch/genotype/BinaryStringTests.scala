@@ -3,7 +3,7 @@ package geneticsearch.genotype
 import org.scalatest.FunSuite
 
 
-class TestBinaryString extends FunSuite {
+class BinaryStringTests extends FunSuite {
 
     test("A BinaryString has the expected length") {
         val binStr = new BinaryString("00101")
@@ -23,7 +23,7 @@ class TestBinaryString extends FunSuite {
 
     test("Splitting a BinaryString creates two BinaryStrings correctly") {
         val binStr = new BinaryString("00101")
-        val (left: BinaryString, right) = binStr.split[BinaryString]
+        val (left: BinaryString, right) = binStr.split
 
         val expectedLeftLen = 2
         val expectedRightLen = 3
