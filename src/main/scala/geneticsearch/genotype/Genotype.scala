@@ -9,7 +9,7 @@ trait Genotype[T] extends Seq[T] {
       * Split a single genotype into two new genotypes, left and right
       * @return Pair of genotypes
       */
-    def split: GenotypePair[T]
+    def split[G <: Genotype[T]]: (G, G)
 
     /**
       * Create a new full genotype from two half genotypes. 'this' acts as the left half.

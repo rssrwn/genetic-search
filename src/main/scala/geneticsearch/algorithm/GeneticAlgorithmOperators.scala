@@ -1,6 +1,6 @@
-package algorithm
+package geneticsearch.algorithm
 
-import util.Types.{CrossoverOp, FitnessOp, MutationOp, SelectionOp}
+import geneticsearch.util.Types.{CrossoverOp, FitnessOp, MutationOp, SelectionOp}
 
 
 class GeneticAlgorithmOperators[T](val fitnessOp: FitnessOp[T],

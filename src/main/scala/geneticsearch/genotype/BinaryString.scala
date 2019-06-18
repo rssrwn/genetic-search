@@ -26,15 +26,14 @@ class BinaryString(private val str: String) extends Genotype[Int] {
         binaryList.iterator
     }
 
-    override def split: (Genotype[Int], Genotype[Int]) = {
+    override def split[BinaryString]: (BinaryString, BinaryString) = {
         val midPoint = length / 2
         val (l1, l2) = binaryList.splitAt(midPoint)
         (new BinaryString(l1.toString()), new BinaryString(l2.toString()))
     }
 
-    override def merge(that: Genotype[Int]): Genotype[Int] = {
-        val thatBinStr: BinaryString = that.asInstanceOf[BinaryString]
-        val newStr = this.str + thatBinStr.str
+    override def merge(that: BinaryString): BinaryString = {
+        val newStr = this.str + that.str
         new BinaryString(newStr)
     }
 

@@ -1,9 +1,9 @@
-package algorithm
+package geneticsearch.algorithm
 
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
-import genotype.Genotype
-import util.Types.Population
+import geneticsearch.genotype.Genotype
+import geneticsearch.util.Types.Population
 
 
 class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {

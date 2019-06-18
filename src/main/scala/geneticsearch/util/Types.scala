@@ -1,6 +1,6 @@
-package util
+package geneticsearch.util
 
-import genotype.Genotype
+import geneticsearch.genotype.Genotype
 
 object Types {
 
