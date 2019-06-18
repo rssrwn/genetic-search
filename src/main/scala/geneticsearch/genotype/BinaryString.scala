@@ -1,11 +1,11 @@
-package genotype
+package geneticsearch.genotype
 
 
 /**
   * Genotypes of binary strings
   * @param str Binary string to use as genotype, non-binary chars are ignored
   */
-class BinaryString(private val str: String) extends Genotype[Int] {
+class BinaryString(private val str: String) extends Genotype[BinaryString] with Seq[Int] {
 
     private val binaryList: List[Int] = {
         str.toCharArray
@@ -26,7 +26,7 @@ class BinaryString(private val str: String) extends Genotype[Int] {
         binaryList.iterator
     }
 
-    override def split[BinaryString]: (BinaryString, BinaryString) = {
+    override def split: (BinaryString, BinaryString) = {
         val midPoint = length / 2
         val (l1, l2) = binaryList.splitAt(midPoint)
         (new BinaryString(l1.toString()), new BinaryString(l2.toString()))
