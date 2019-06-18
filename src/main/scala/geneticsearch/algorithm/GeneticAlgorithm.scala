@@ -3,7 +3,7 @@ package geneticsearch.algorithm
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 import geneticsearch.genotype.Genotype
-import geneticsearch.util.Types.Population
+import geneticsearch.Types.Population
 
 
 class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {

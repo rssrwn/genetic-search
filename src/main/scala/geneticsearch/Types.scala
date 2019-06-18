@@ -1,4 +1,4 @@
-package geneticsearch.util
+package geneticsearch
 
 import geneticsearch.genotype.Genotype
 

@@ -1,6 +1,6 @@
 package geneticsearch.algorithm
 
-import geneticsearch.util.Types.{CrossoverOp, FitnessOp, MutationOp, Population, SelectionOp}
+import geneticsearch.Types.{CrossoverOp, FitnessOp, MutationOp, Population, SelectionOp}
 
 
 class GeneticAlgorithmBuilder[T] {
