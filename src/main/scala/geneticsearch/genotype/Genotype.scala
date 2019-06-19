@@ -2,14 +2,17 @@ package geneticsearch.genotype
 
 import geneticsearch.Types.GenotypePair
 
+import scala.util.Try
+
 
 trait Genotype[T] extends Seq[T] {
 
     /**
       * Split a single genotype into two new genotypes, left and right
+      * @param index The index to split on (the index is included in the left genotype)
       * @return Pair of genotypes
       */
-    def split: GenotypePair[T]
+    def split(index: Int): Try[GenotypePair[T]]
 
     /**
       * Create a new full genotype from two half genotypes. 'this' acts as the left half.

@@ -1,7 +1,7 @@
 package geneticsearch.operators
 
 import geneticsearch.Types.{CrossoverOp, GenotypePair}
-import geneticsearch.genotype.BinaryString
+import geneticsearch.Util.extractSuccess
 
 
 /*
@@ -9,13 +9,37 @@ Factory for crossover operators
  */
 object Crossovers {
 
-    // TODO allow to be non-BinaryString genotype
-    // AND remove midPoint specific code from splitting and merging BinaryString (take args)
-    // Will need to force genotype to extend Seq
-    val midPointCrossover: CrossoverOp[BinaryString] = {
+    /**
+      * Builds a crossover function which splits at an arbitrary index
+      * @param splitIndex index to split at
+      * @tparam T Type of the elements within the genotype
+      * @return Crossover function
+      */
+    def onePointCrossover[T](splitIndex: Int): CrossoverOp[T] = {
         (g1, g2) => {
-            val (g1Left, g1Right) = g1.split
-            val (g2Left, g2Right) = g2.split
+            val (g1Left, g1Right) = extractSuccess(g1.split(splitIndex))
+            val (g2Left, g2Right) = extractSuccess(g2.split(splitIndex))
+
+            (g1Left.merge(g2Right), g2Left.merge(g1Right))
+        }
+    }
+
+    /**
+      * Builds a crossover function which splits at the midpoint
+      * Returned function enforced that genotypes are the same size
+      * @tparam T Type of the elements within the genotype
+      * @return Crossover function
+      */
+    def midPointCrossover[T]: CrossoverOp[T] = {
+        (g1, g2) => {
+            if (g1.length != g2.length) {
+                System.err.println("The lengths of the two genotypes must be the same")
+                sys.exit(1)
+            }
+            val mid = g1.length / 2
+
+            val (g1Left, g1Right) = extractSuccess(g1.split(mid))
+            val (g2Left, g2Right) = extractSuccess(g2.split(mid))
 
             (g1Left.merge(g2Right), g2Left.merge(g1Right))
         }

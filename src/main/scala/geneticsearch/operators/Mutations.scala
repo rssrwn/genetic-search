@@ -1,7 +1,7 @@
 package geneticsearch.operators
 
-import geneticsearch.Types.{MutationOp, Population}
-import geneticsearch.genotype.{BinaryString, Genotype}
+import geneticsearch.Types.MutationOp
+import geneticsearch.genotype.Genotype
 
 
 /*
@@ -9,8 +9,8 @@ Factory for mutation operators
  */
 object Mutations {
 
-    def randBitFlip(flipProb: Float): MutationOp[BinaryString] = {
-        genotype: Genotype[BinaryString] => {
+    def randBitFlip[T](flipProb: Float): MutationOp[T] = {
+        genotype: Genotype[T] => {
             genotype.mutate(flipProb)
         }
     }

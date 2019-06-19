@@ -1,6 +1,6 @@
 package geneticsearch.genotype
 
-import scala.util.Random
+import scala.util.{Failure, Random, Success, Try}
 
 
 /**
@@ -28,10 +28,16 @@ class BinaryString(private val str: String) extends Genotype[Int] {
         binaryList.iterator
     }
 
-    override def split: (Genotype[Int], Genotype[Int]) = {
-        val midPoint = length / 2
-        val (l1, l2) = binaryList.splitAt(midPoint)
-        (new BinaryString(l1.toString()), new BinaryString(l2.toString()))
+    override def split(index: Int): Try[(Genotype[Int], Genotype[Int])] = {
+        if (index >= length) {
+            val message = "Split index cannot be larger or equal to the length of the BinaryString"
+            Failure(new java.lang.IndexOutOfBoundsException(message))
+        } else {
+            val midPoint = length / 2
+            val (l1, l2) = binaryList.splitAt(midPoint)
+            val binStrPair = (new BinaryString(l1.toString()), new BinaryString(l2.toString()))
+            Success(binStrPair)
+        }
     }
 
     override def merge(that: Genotype[Int]): Genotype[Int] = {
