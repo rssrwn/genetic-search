@@ -28,6 +28,7 @@ class BinaryString(private val str: String) extends Genotype[Int] {
         binaryList.iterator
     }
 
+    // TODO dont return a try, just kill ??
     override def split(index: Int): Try[(Genotype[Int], Genotype[Int])] = {
         if (index >= length) {
             val message = "Split index cannot be larger or equal to the length of the BinaryString"
@@ -51,6 +52,20 @@ class BinaryString(private val str: String) extends Genotype[Int] {
                 .reduceLeft(_++_)
 
         new BinaryString(newStr)
+    }
+
+    override def distance(that: Genotype[Int]): Try[Float] = {
+        if (length != that.length) {
+            val message = "Both genotypes must the same length"
+            Failure(new java.lang.IndexOutOfBoundsException(message))
+        } else {
+            val thatBinStr = that.asInstanceOf[BinaryString]
+            val dist = binaryList.zip(thatBinStr)
+                    .map(elems => math.abs(elems._1 - elems._2))
+                    .sum
+
+            Success(dist)
+        }
     }
 
 }

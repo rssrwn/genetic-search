@@ -32,4 +32,11 @@ trait Genotype[T] extends Seq[T] {
         this
     }
 
+    /**
+      * Computes the distance to the genotype passed in
+      * @param that Genotype to compare to
+      * @return Distance to that genotype
+      */
+    def distance(that: Genotype[T]): Try[Float]
+
 }
