@@ -1,5 +1,5 @@
 package geneticsearch.operators
 
-object Selections {
+object Fitness {
 
 }
