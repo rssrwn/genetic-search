@@ -7,7 +7,7 @@ import geneticsearch.Util.extractSuccess
 /*
 Factory for crossover operators
  */
-object Crossovers {
+object Crossover {
 
     /**
       * Builds a crossover function which splits at an arbitrary index
