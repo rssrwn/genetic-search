@@ -22,9 +22,10 @@ trait Genotype[T] extends Seq[T] {
     /**
       * Mutate this particular genotype
       * Default implementation does nothing
+      * @param prob Probability of mutating an element of the Seq
       * @return Mutated genotype
       */
-    def mutate: Genotype[T] = {
+    def mutate(prob: Float): Genotype[T] = {
         this
     }
 

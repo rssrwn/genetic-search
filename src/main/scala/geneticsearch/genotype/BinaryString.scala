@@ -6,9 +6,8 @@ import scala.util.Random
 /**
   * Genotypes of binary strings
   * @param str Binary string to use as genotype, non-binary chars are ignored
-  * @param flipProb Probability of flipping a bit when mutating this genotype
   */
-class BinaryString(private val str: String, private val flipProb: Float) extends Genotype[Int] {
+class BinaryString(private val str: String) extends Genotype[Int] {
 
     private val binaryList: List[Int] = {
         str.toCharArray
@@ -32,20 +31,20 @@ class BinaryString(private val str: String, private val flipProb: Float) extends
     override def split: (Genotype[Int], Genotype[Int]) = {
         val midPoint = length / 2
         val (l1, l2) = binaryList.splitAt(midPoint)
-        (new BinaryString(l1.toString(), flipProb), new BinaryString(l2.toString(), flipProb))
+        (new BinaryString(l1.toString()), new BinaryString(l2.toString()))
     }
 
     override def merge(that: Genotype[Int]): Genotype[Int] = {
         val thatBinStr = that.asInstanceOf[BinaryString]
         val newStr = this.str + thatBinStr.str
-        new BinaryString(newStr, flipProb)
+        new BinaryString(newStr)
     }
 
-    override def mutate: Genotype[BinaryString] = {
-        val newStr = binaryList.map(bit => BinaryString.flipBit(bit, flipProb).toString)
+    override def mutate(prob: Float): Genotype[Int] = {
+        val newStr = binaryList.map(bit => BinaryString.flipBit(bit, prob).toString)
                 .reduceLeft(_++_)
 
-        new BinaryString(newStr, flipProb)
+        new BinaryString(newStr)
     }
 
 }
