@@ -14,7 +14,7 @@ class GeneticAlgorithmOperators[T](val fitnessOp: FitnessOp[T],
     }
 
     def containsMutationOp: Boolean = {
-        mutationOp != null
+        mutationOp != null && mutationProb != 0
     }
 
 }
