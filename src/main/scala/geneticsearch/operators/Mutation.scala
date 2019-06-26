@@ -1,7 +1,6 @@
 package geneticsearch.operators
 
-import geneticsearch.Types.MutationOp
-import geneticsearch.genotype.Genotype
+import geneticsearch.Types.{MutationOp, Population}
 
 
 /*
@@ -9,16 +8,21 @@ Factory for mutation operators
  */
 object Mutation {
 
-    // TODO make mutationOp take a pop
     /**
-      * Returns a function which will flip each element of the genotype with <flipProb>
-      * @param flipProb Probability with which to flip each element of the genotype
-      * @tparam T Type of the elements within the genotype
-      * @return Bit flip mutation function
+      * Returns a function which will randomly select <numToMutate> genotypes, generate a new genotype by
+      * mutating each selected genotype and then append the new genotype to the existing population
+      * @param numToMutate Number of genotypes in the population to mutate
+      * @param mutationProb Probability of mutating a genotype in the population
+      * @tparam T Type of the elements within each genotype
+      * @return Mutation operator
       */
-    def randBitFlip[T](flipProb: Float): MutationOp[T] = {
-        genotype: Genotype[T] => {
-            genotype.mutate(flipProb)
+    def appendMutatedPop[T](numToMutate: Int, mutationProb: Float): MutationOp[T] = {
+        // TODO
+        pop: Population[T] => {
+            pop.map { genotype =>
+                genotype.mutate()
+
+            }
         }
     }
 
