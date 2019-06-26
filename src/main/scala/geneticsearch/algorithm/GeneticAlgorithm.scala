@@ -65,13 +65,7 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
     }
 
     private def mutate(pop: Population[T]): Population[T] = {
-        pop.map(genotype => {
-            if (Random.nextFloat() <= ops.mutationProb) {
-                ops.mutationOp(genotype)
-            } else {
-                genotype
-            }
-        })
+        ops.mutationOp(pop)
     }
 
     private def selectFittest(pop: Population[T]): Population[T] = {

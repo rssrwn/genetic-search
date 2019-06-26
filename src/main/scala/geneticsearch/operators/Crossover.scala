@@ -9,6 +9,7 @@ Factory for crossover operators
  */
 object Crossover {
 
+    // TODO make crossover entire pop? or allow to order pop by fitness
     /**
       * Builds a crossover function which splits at an arbitrary index
       * @param splitIndex index to split at
