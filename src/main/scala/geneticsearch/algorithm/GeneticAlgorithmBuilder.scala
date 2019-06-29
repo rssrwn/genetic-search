@@ -11,10 +11,9 @@ class GeneticAlgorithmBuilder[T] {
     private var selectionOp: SelectionOp[T] = _
     private var crossoverOp: CrossoverOp[T] = _
     private var mutationOp: MutationOp[T] = _
-    private var mutationProb: Float = 1
 
     def build(): GeneticAlgorithm[T] = {
-        val ops = new GeneticAlgorithmOperators[T](fitnessOp, selectionOp, crossoverOp, mutationOp, mutationProb)
+        val ops = new GeneticAlgorithmOperators[T](fitnessOp, selectionOp, crossoverOp, mutationOp)
         new GeneticAlgorithm[T](ops, numIterations)
     }
 
@@ -45,11 +44,6 @@ class GeneticAlgorithmBuilder[T] {
 
     def withMutationOp(op: MutationOp[T]): GeneticAlgorithmBuilder[T] = {
         mutationOp = op
-        this
-    }
-
-    def withMutationProb(prob: Float): GeneticAlgorithmBuilder[T] = {
-        mutationProb = prob
         this
     }
 

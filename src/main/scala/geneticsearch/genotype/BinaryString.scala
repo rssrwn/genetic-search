@@ -8,7 +8,7 @@ import scala.util.{Failure, Random, Success, Try}
   * @param str Binary string to use as genotype, non-binary chars are ignored
   * @param flipProb Probability of each bit being flipped when mutating
   */
-class BinaryString(private val str: String, private val flipProb: Float) extends Genotype[Int] {
+class BinaryString(val str: String, val flipProb: Float) extends Genotype[Int] {
 
     private val binaryList: List[Int] = {
         str.toCharArray
