@@ -1,5 +1,7 @@
 package geneticsearch.operators
 
+import scala.util.Random
+
 import geneticsearch.Types.{MutationOp, Population}
 
 
@@ -17,12 +19,16 @@ object Mutation {
       * @return Mutation operator
       */
     def appendMutatedPop[T](numToMutate: Int, mutationProb: Float): MutationOp[T] = {
-        // TODO
         pop: Population[T] => {
-            pop.map { genotype =>
-                genotype.mutate()
-
+            val mutated = pop.map { genotype =>
+                if (Random.nextFloat() <= mutationProb) {
+                    genotype.mutate()
+                } else {
+                    genotype
+                }
             }
+
+            pop ++ mutated
         }
     }
 
