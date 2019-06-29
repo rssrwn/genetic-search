@@ -22,6 +22,7 @@ trait Genotype[T] extends Seq[T] {
       */
     def merge(that: Genotype[T]): Genotype[T]
 
+    // TODO remove default behaviour?
     /**
       * Mutate this particular genotype
       * Default implementation does nothing
