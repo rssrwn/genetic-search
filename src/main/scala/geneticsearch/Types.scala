@@ -13,4 +13,6 @@ object Types {
     type SelectionOp[T] = EvalPopulation[T] => Population[T]
     type CrossoverOp[T] = (Genotype[T], Genotype[T]) => GenotypePair[T]
 
+    type DistanceFunc[T] = (Genotype[T], Genotype[T]) => Float
+
 }
