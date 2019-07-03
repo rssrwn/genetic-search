@@ -10,7 +10,7 @@ import scala.util.{Failure, Random, Success, Try}
   */
 class BinaryString(val str: String, val flipProb: Float) extends Genotype[Int] {
 
-    private val binaryList: List[Int] = {
+    private val binaryList: Sequence[Int] = {
         str.toCharArray
                 .filter(c => c == '0' || c == '1')
                 .map(c => c.toString.toInt)

@@ -1,13 +1,17 @@
 package geneticsearch.genotype
 
-import geneticsearch.Types.DistanceFunc
+import geneticsearch.Types.{SeqDistanceFunc, SeqMutationFunc}
 
 import scala.util.{Failure, Success, Try}
 
 
-class List[T](elems: Seq[T], distFunc: DistanceFunc[T]) extends Genotype[T] {
+class Sequence[T](elems: Seq[T], distFunc: SeqDistanceFunc[T], mutFunc: SeqMutationFunc[T]) extends Genotype[T] {
 
     private val vec: Vector[T] = elems.toVector
+
+    private def this(elems: Seq[T]) = {
+        this(elems, distFunc, mutFunc)
+    }
 
     override def split(index: Int): Try[(Genotype[T], Genotype[T])] = {
         if (index >= length) {
@@ -16,22 +20,21 @@ class List[T](elems: Seq[T], distFunc: DistanceFunc[T]) extends Genotype[T] {
         } else {
             val midPoint = length / 2
             val (l1, l2) = vec.splitAt(midPoint)
-            val listPair = (new List(l1, distFunc), new List(l2, distFunc))
+            val listPair = (new Sequence(l1), new Sequence(l2))
             Success(listPair)
         }
     }
 
     override def merge(that: Genotype[T]): Genotype[T] = {
-        val thatList = that.asInstanceOf[List]
+        val thatList = that.asInstanceOf[Sequence]
         val newElems = this.vec ++ thatList.vec
-        new List(newElems, distFunc)
+        new Sequence(newElems)
     }
 
-    override def mutate(): Genotype[T] = super.mutate()
+    override def mutate(): Genotype[T] = {
+        mutFunc(this)
+    }
 
-    /*
-    Euclidean distance between two vectors
-     */
     // TODO remove failure case, use first n elems
     override def distance(that: Genotype[T]): Try[Float] = {
         val dist = distFunc(this, that)
