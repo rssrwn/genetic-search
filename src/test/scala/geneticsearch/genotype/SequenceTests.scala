@@ -5,24 +5,15 @@ import geneticsearch.Util.extractSuccess
 import org.scalatest.FunSuite
 
 
-class BinaryStringTests extends FunSuite {
+class SequenceTests extends FunSuite {
 
     private val flipProb = 0.2f
 
-    test("A BinaryString has the expected length") {
+    test("A Sequence has the expected length") {
         val binStr = new BinaryString("00101", flipProb)
         val expectedLength = 5
 
         assertResult(expectedLength)(binStr.length)
-    }
-
-    test("A BinaryString ignores non-binary chars") {
-        val binStr = new BinaryString("00a10b1", flipProb)
-        val expectedLength = 5
-        val intAtIndexTwo = 1
-
-        assertResult(expectedLength)(binStr.length)
-        assertResult(intAtIndexTwo)(binStr.apply(2))
     }
 
     test("Splitting a BinaryString creates two BinaryStrings correctly") {

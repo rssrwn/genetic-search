@@ -1,18 +1,19 @@
 package geneticsearch.genotype
 
-import geneticsearch.Types.{SeqDistanceFunc, SeqMutationFunc}
+import geneticsearch.Types.{DistanceFunc, MutationFunc}
 
 import scala.util.{Failure, Success, Try}
 
 
-class Sequence[T](elems: Seq[T], distFunc: SeqDistanceFunc[T], mutFunc: SeqMutationFunc[T]) extends Genotype[T] {
+class Sequence[T](elems: Seq[T], mutFunc: MutationFunc[Sequence[T]], distFunc: DistanceFunc[Sequence[T]]) extends Genotype[T] {
 
-    private val vec: Vector[T] = elems.toVector
+    val vec: Vector[T] = elems.toVector
 
-    private def this(elems: Seq[T]) = {
-        this(elems, distFunc, mutFunc)
+    private def Sequence(elems: Seq[T]): Sequence[T] = {
+        new Sequence(elems, mutFunc, distFunc)
     }
 
+    // TODO dont return a try?
     override def split(index: Int): Try[(Genotype[T], Genotype[T])] = {
         if (index >= length) {
             val message = "Split index cannot be larger or equal to the length of the BinaryString"
@@ -20,7 +21,7 @@ class Sequence[T](elems: Seq[T], distFunc: SeqDistanceFunc[T], mutFunc: SeqMutat
         } else {
             val midPoint = length / 2
             val (l1, l2) = vec.splitAt(midPoint)
-            val listPair = (new Sequence(l1), new Sequence(l2))
+            val listPair = (Sequence(l1), Sequence(l2))
             Success(listPair)
         }
     }
@@ -28,14 +29,14 @@ class Sequence[T](elems: Seq[T], distFunc: SeqDistanceFunc[T], mutFunc: SeqMutat
     override def merge(that: Genotype[T]): Genotype[T] = {
         val thatList = that.asInstanceOf[Sequence]
         val newElems = this.vec ++ thatList.vec
-        new Sequence(newElems)
+        Sequence(newElems)
     }
 
     override def mutate(): Genotype[T] = {
         mutFunc(this)
     }
 
-    // TODO remove failure case, use first n elems
+    // TODO remove try
     override def distance(that: Genotype[T]): Try[Float] = {
         val dist = distFunc(this, that)
         Success(dist)
