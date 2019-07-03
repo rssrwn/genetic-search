@@ -1,6 +1,6 @@
 package geneticsearch
 
-import geneticsearch.genotype.{Genotype, Sequence}
+import geneticsearch.genotype.Genotype
 
 object Types {
 
@@ -13,7 +13,7 @@ object Types {
     type SelectionOp[T] = EvalPopulation[T] => Population[T]
     type CrossoverOp[T] = (Genotype[T], Genotype[T]) => GenotypePair[T]
 
-    type SeqDistanceFunc[T] = (Sequence[T], Sequence[T]) => Float
-    type SeqMutationFunc[T] = Sequence[T] => Sequence[T]
+    type MutationFunc[T] = T => T
+    type DistanceFunc[T] = (T, T) => Float
 
 }

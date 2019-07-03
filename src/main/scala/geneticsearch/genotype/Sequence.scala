@@ -9,7 +9,7 @@ class Sequence[T](elems: Seq[T], mutFunc: MutationFunc[Sequence[T]], distFunc: D
 
     val vec: Vector[T] = elems.toVector
 
-    private def Sequence(elems: Seq[T]): Sequence[T] = {
+    def withElems(elems: Seq[T]): Sequence[T] = {
         new Sequence(elems, mutFunc, distFunc)
     }
 
@@ -21,7 +21,7 @@ class Sequence[T](elems: Seq[T], mutFunc: MutationFunc[Sequence[T]], distFunc: D
         } else {
             val midPoint = length / 2
             val (l1, l2) = vec.splitAt(midPoint)
-            val listPair = (Sequence(l1), Sequence(l2))
+            val listPair = (withElems(l1), withElems(l2))
             Success(listPair)
         }
     }
@@ -29,7 +29,7 @@ class Sequence[T](elems: Seq[T], mutFunc: MutationFunc[Sequence[T]], distFunc: D
     override def merge(that: Genotype[T]): Genotype[T] = {
         val thatList = that.asInstanceOf[Sequence]
         val newElems = this.vec ++ thatList.vec
-        Sequence(newElems)
+        withElems(newElems)
     }
 
     override def mutate(): Genotype[T] = {

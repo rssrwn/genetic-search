@@ -5,6 +5,7 @@ import geneticsearch.Types.GenotypePair
 import scala.util.Try
 
 
+// TODO genotype not extend Seq
 trait Genotype[T] extends Seq[T] {
 
     /**
