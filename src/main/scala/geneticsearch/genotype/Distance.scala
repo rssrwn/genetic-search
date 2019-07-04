@@ -23,18 +23,18 @@ object Distance {
                     .map(Math.pow(_, 2))
                     .sum
 
-            Math.sqrt(sqSum).asInstanceOf[Float]
+            Math.sqrt(sqSum).toFloat
         }
     }
 
-    def euclideanFloat(): DistanceFunc[Sequence[Float]] = {
+    def euclideanFloat(): DistanceFunc[Sequence[Double]] = {
         (seq1, seq2) => {
             val sqSum = seq1.zip(seq2)
                     .map({case(num1, num2) => num1 - num2})
                     .map(Math.pow(_, 2))
                     .sum
 
-            Math.sqrt(sqSum).asInstanceOf[Float]
+            Math.sqrt(sqSum).toFloat
         }
     }
 

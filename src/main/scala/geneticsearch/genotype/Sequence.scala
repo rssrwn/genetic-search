@@ -27,7 +27,7 @@ class Sequence[T](elems: Seq[T], mutFunc: MutationFunc[Sequence[T]], distFunc: D
     }
 
     override def merge(that: Genotype[T]): Genotype[T] = {
-        val thatList = that.asInstanceOf[Sequence]
+        val thatList = that.asInstanceOf[Sequence[T]]
         val newElems = this.vec ++ thatList.vec
         withElems(newElems)
     }
@@ -37,8 +37,9 @@ class Sequence[T](elems: Seq[T], mutFunc: MutationFunc[Sequence[T]], distFunc: D
     }
 
     // TODO remove try
+    // Must be called with a Sequence genotype
     override def distance(that: Genotype[T]): Try[Float] = {
-        val dist = distFunc(this, that)
+        val dist = distFunc(this, that.asInstanceOf[Sequence[T]])
         Success(dist)
     }
 
