@@ -38,7 +38,7 @@ object Mutation {
     The amount is the element multiplied by <mult>
     Each element is mutated with probability <mutateProb>
      */
-    def mutateDouble(mutateProb: Float, mult: Float): MutationFunc[Sequence[Double]] = {
+    def multiplierMutation(mutateProb: Float, mult: Float): MutationFunc[Sequence[Double]] = {
         genotype => {
             val elems = genotype.map { elem =>
                 val rand = Random.nextFloat()
