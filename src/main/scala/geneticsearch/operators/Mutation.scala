@@ -1,8 +1,7 @@
 package geneticsearch.operators
 
 import scala.util.Random
-
-import geneticsearch.Types.{MutationOp, Population}
+import geneticsearch.Types.{EvalPopulation, MutationOp, Population}
 
 
 /*
@@ -11,7 +10,7 @@ Factory for mutation operators
 object Mutation {
 
     /**
-      * Returns a function which will choose to randomly mutate genotypes with proability <mutationProb>
+      * Returns a function which will choose to randomly mutate genotypes with probability <mutationProb>
       * Mutated genotypes are appended to the existing population
       * @param mutationProb Probability of mutating a genotype in the population
       * @tparam T Type of the elements within each genotype

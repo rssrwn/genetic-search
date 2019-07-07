@@ -1,7 +1,11 @@
 package geneticsearch.operators
 
-import geneticsearch.Types.{CrossoverOp, GenotypePair}
+import geneticsearch.Types.{CrossoverOp, GenotypePair, Population}
 import geneticsearch.Util.extractSuccess
+import geneticsearch.genotype.Genotype
+
+import scala.collection.mutable.ListBuffer
+import scala.util.Random
 
 
 /*
@@ -9,41 +13,67 @@ Factory for crossover operators
  */
 object Crossover {
 
-    // TODO make crossover entire pop? or allow to order pop by fitness
     /**
-      * Builds a crossover function which splits at an arbitrary index
-      * @param splitIndex index to split at
-      * @tparam T Type of the elements within the genotype
-      * @return Crossover function
+      * Returns a crossover operator which chooses random pairs all of the genotypes
+      * then splits each in half and crosses-over within each pair
+      * An odd number of genotypes will result in one genotype left unchanged
+      * @param splitIdx The index of each genotype at which to split
+      * @return Crossover operator
       */
-    def onePointCrossover[T](splitIndex: Int): CrossoverOp[T] = {
-        (g1, g2) => {
-            val (g1Left, g1Right) = extractSuccess(g1.split(splitIndex))
-            val (g2Left, g2Right) = extractSuccess(g2.split(splitIndex))
+    def randomPairs[T](splitIdx: Int = -1): CrossoverOp[T] = {
+        pop: Population[T] => {
+            val shuffle = shufflePop[T](pop).zipWithIndex.toVector
+            val len = shuffle.length
+            val newPop = new ListBuffer[Genotype[T]]()
 
-            (g1Left.merge(g2Right), g2Left.merge(g1Right))
+            for ((elem, i) <- shuffle) {
+                if (len == i) {
+                    newPop += elem
+                } else {
+                    if (i % 2 == 0) {
+                        val nextElem = shuffle(i+1)._1
+                        val (cross1, cross2) = crossover[T](elem, nextElem, splitIdx)
+                        newPop += cross1
+                        newPop += cross2
+                    }
+                }
+            }
+
+            newPop.toList
         }
     }
 
-    /**
-      * Builds a crossover function which splits at the midpoint
-      * Returned function enforced that genotypes are the same size
-      * @tparam T Type of the elements within the genotype
-      * @return Crossover function
-      */
-    def midPointCrossover[T]: CrossoverOp[T] = {
-        (g1, g2) => {
-            if (g1.length != g2.length) {
-                System.err.println("The lengths of the two genotypes must be the same")
-                sys.exit(1)
-            }
-            val mid = g1.length / 2
-
-            val (g1Left, g1Right) = extractSuccess(g1.split(mid))
-            val (g2Left, g2Right) = extractSuccess(g2.split(mid))
-
-            (g1Left.merge(g2Right), g2Left.merge(g1Right))
+    def fitnessPairs[T](splitIdx: Int = -1): CrossoverOp[T] = {
+        pop: Population[T] => {
+            
         }
+    }
+
+    /*
+    Shuffles the original pop by shuffling the indices and converting back to original elems
+     */
+    private def shufflePop[T](pop: Population[T]): Population[T] = {
+        val vec = pop.toVector
+        val indices = vec.map(elem => vec.indexOf(elem))
+        val shuffle = Random.shuffle(indices)
+        shuffle.map(idx => vec(idx)).toList
+    }
+
+    /*
+    Splits two genotypes and merges with the other
+    If <splitIdx> is -1 use middle point of first genotype to split at
+     */
+    private def crossover[T](g1: Genotype[T], g2: Genotype[T], splitIdx: Int): GenotypePair[T] = {
+        val split = if (splitIdx == -1) {
+            g1.length / 2
+        } else {
+            splitIdx
+        }
+
+        val (g1Left, g1Right) = extractSuccess(g1.split(split))
+        val (g2Left, g2Right) = extractSuccess(g2.split(split))
+
+        (g1Left.merge(g2Right), g2Left.merge(g1Right))
     }
 
 }

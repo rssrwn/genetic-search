@@ -27,41 +27,9 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
         ops.selectionOp(eval)
     }
 
-    /**
-      * Pairs all of the genotypes then splits each in half and crosses-over within each pair
-      * An odd number of genotypes will result in one genotype left unchanged
-      * @param pop The population
-      * @return The new population with cross-over applied
-      */
     private def crossover(pop: Population[T]): Population[T] = {
-        val shuffle = shufflePop(pop).zipWithIndex.toVector
-        val len = shuffle.length
-
-        val newPop = new ListBuffer[Genotype[T]]()
-        for ((elem, i) <- shuffle) {
-            if (len == i) {
-                newPop += elem
-            } else {
-                if (i % 2 == 0) {
-                    val nextElem = shuffle(i+1)._1
-                    val (cross1, cross2) = ops.crossoverOp(elem, nextElem)
-                    newPop += cross1
-                    newPop += cross2
-                }
-            }
-        }
-
-        newPop.toList
-    }
-
-    /*
-    Shuffles the original pop by shuffling the indices and converting back to original elems
-     */
-    private def shufflePop(pop: Population[T]): Population[T] = {
-        val vec = pop.toVector
-        val indices = vec.map(elem => vec.indexOf(elem))
-        val shuffle = Random.shuffle(indices)
-        shuffle.map(idx => vec(idx)).toList
+        // TODO sort by fitness
+        ops.crossoverOp(pop)
     }
 
     private def mutate(pop: Population[T]): Population[T] = {
