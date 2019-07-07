@@ -18,35 +18,51 @@ object Crossover {
       * then splits each in half and crosses-over within each pair
       * An odd number of genotypes will result in one genotype left unchanged
       * @param splitIdx The index of each genotype at which to split
+      * @tparam T Type of the elements within each genotype
       * @return Crossover operator
       */
     def randomPairs[T](splitIdx: Int = -1): CrossoverOp[T] = {
         pop: Population[T] => {
-            val shuffle = shufflePop[T](pop).zipWithIndex.toVector
-            val len = shuffle.length
-            val newPop = new ListBuffer[Genotype[T]]()
-
-            for ((elem, i) <- shuffle) {
-                if (len == i) {
-                    newPop += elem
-                } else {
-                    if (i % 2 == 0) {
-                        val nextElem = shuffle(i+1)._1
-                        val (cross1, cross2) = crossover[T](elem, nextElem, splitIdx)
-                        newPop += cross1
-                        newPop += cross2
-                    }
-                }
-            }
-
-            newPop.toList
+            val shuffle = shufflePop[T](pop)
+            crossoverPop(shuffle, splitIdx)
         }
     }
 
+    /**
+      * Returns a crossover operator which pairs genotypes with their neighbours
+      * If genotypes are passed in by ranking on fitness they will be paired with genotypes with similar fitness
+      * An odd number of genotypes will result in one genotype left unchanged
+      * @param splitIdx The index of each genotype at which to split
+      * @tparam T Type of the elements within each genotype
+      * @return Crossover operator
+      */
     def fitnessPairs[T](splitIdx: Int = -1): CrossoverOp[T] = {
         pop: Population[T] => {
-            
+            crossoverPop(pop, splitIdx)
         }
+    }
+
+    /*
+    Crossover a population by matching genotypes with their neighbours
+    If <splitIdx> is -1 use mid point of left genotype in pair as split index
+     */
+    private def crossoverPop[T](pop: Population[T], splitIdx: Int): Population[T] = {
+        val popIdx = pop.zipWithIndex.toVector
+        val newPop = new ListBuffer[Genotype[T]]()
+        for ((elem, i) <- popIdx) {
+            if (pop.length == i) {
+                newPop += elem
+            } else {
+                if (i % 2 == 0) {
+                    val nextElem = pop(i+1)
+                    val (cross1, cross2) = crossover[T](elem, nextElem, splitIdx)
+                    newPop += cross1
+                    newPop += cross2
+                }
+            }
+        }
+
+        newPop.toList
     }
 
     /*
