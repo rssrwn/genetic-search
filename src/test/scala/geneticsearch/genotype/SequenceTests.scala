@@ -22,17 +22,17 @@ class SequenceTests extends FunSuite {
     test("Splitting a Sequence creates two BinaryStrings correctly") {
         val (left, right) = extractSuccess(genotype.split(1))
 
-        val expectedLeftLen = 2
-        val expectedRightLen = 3
+        val expectedLeftLen = 1
+        val expectedRightLen = 4
 
-        val indexOne = 0
+        val indexZero = 0
         val indexFour = 1
 
         assertResult(expectedLeftLen)(left.length)
         assertResult(expectedRightLen)(right.length)
 
-        assertResult(indexOne)(left.apply(1))
-        assertResult(indexFour)(right.apply(2))
+        assertResult(indexZero)(left.head)
+        assertResult(indexFour)(right.last)
     }
 
     test("Merging a split Sequence creates an equivalent Sequence") {

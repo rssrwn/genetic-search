@@ -5,7 +5,7 @@ import geneticsearch.Types.{DistanceFunc, MutationFunc}
 import scala.util.{Failure, Success, Try}
 
 
-class Sequence[T](elems: Seq[T], mutFunc: MutationFunc[Sequence[T]], distFunc: DistanceFunc[Sequence[T]]) extends Genotype[T] {
+class Sequence[T](val elems: Seq[T], val mutFunc: MutationFunc[Sequence[T]], val distFunc: DistanceFunc[Sequence[T]]) extends Genotype[T] {
 
     val vec: Vector[T] = elems.toVector
 
@@ -19,8 +19,7 @@ class Sequence[T](elems: Seq[T], mutFunc: MutationFunc[Sequence[T]], distFunc: D
             val message = "Split index cannot be larger or equal to the length of the BinaryString"
             Failure(new java.lang.IndexOutOfBoundsException(message))
         } else {
-            val midPoint = length / 2
-            val (l1, l2) = vec.splitAt(midPoint)
+            val (l1, l2) = vec.splitAt(index)
             val listPair = (withElems(l1), withElems(l2))
             Success(listPair)
         }

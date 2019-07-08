@@ -75,8 +75,6 @@ class DistanceTests extends FunSuite {
 
     private def floatEqual(num1: Double, num2: Double, epsilon: Double): Boolean = {
         val diff = Math.abs(num1 - num2)
-        println(num1)
-        println(num2)
         diff <= epsilon
     }
 
