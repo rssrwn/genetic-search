@@ -40,4 +40,67 @@ class CrossoverTests extends FunSuite {
         assertResult(expectedLast)(seqs.last)
     }
 
+    test("randomPairs crossover operator crosses with only one other genotype") {
+        val crossoverOp = Crossover.randomPairs[Int](3)
+        val crossedPop = crossoverOp(pop)
+
+        val seqs = crossedPop.map(genotype => genotype.asInstanceOf[Sequence[Int]].elems)
+        val sameStart = startsWith[Int](seqs, Seq(1,2,3))
+
+        val expectedLength = 1
+
+        assertResult(expectedLength)(sameStart.length)
+    }
+
+    test("randomPairs crossover operator crosses with other genotypes with equal probability") {
+        def pop: List[Sequence[Int]] = new Sequence(Seq(1,2,3,4,5), null, null) ::
+                new Sequence(Seq(6,7,8,9,10), null, null) ::
+                new Sequence(Seq(11,12,13,14,15), null, null) :: Nil
+
+        val numPops = 10000
+        val pops = Seq.fill(numPops)(pop)
+        val crossoverOp = Crossover.randomPairs[Int](3)
+
+        val crossedPops = pops.map(crossoverOp).map { pop =>
+            pop.map { genotype =>
+                genotype.asInstanceOf[Sequence[Int]].elems
+            }
+        }
+
+        val crossZeroOne = Seq(1,2,3,9,10)
+        val crossOneTwo = Seq(6,7,8,14,15)
+
+        val numZeroOne = crossedPops.map { pop =>
+            if (pop.contains(crossZeroOne)) 1 else 0
+        }.sum
+        val zeroOneCrossProb = numZeroOne / numPops.toDouble
+
+        val numOneTwo = crossedPops.map { pop =>
+            if (pop.contains(crossOneTwo)) 1 else 0
+        }.sum
+        val oneTwoCrossProb = numOneTwo / numPops.toDouble
+
+        val error = 0.05
+        val expectedProb = (2.0 / 3.0) * (1.0 / 2.0)
+        val probRange = (expectedProb * (1 - error), expectedProb * (1 + error))
+
+        assert(zeroOneCrossProb >= probRange._1 && zeroOneCrossProb <= probRange._2)
+        assert(oneTwoCrossProb >= probRange._1 && oneTwoCrossProb <= probRange._2)
+    }
+
+    /*
+    Find all Seq[T] that starts with <start> elems
+     */
+    private def startsWith[T](seqs: Seq[Seq[T]], start: Seq[T]): Seq[Seq[T]] = {
+        val lenStart = start.length
+        seqs.flatMap { seq =>
+            val seqStart = seq.take(lenStart)
+            if (seqStart == start) {
+                Some(seq)
+            } else {
+                None
+            }
+        }
+    }
+
 }

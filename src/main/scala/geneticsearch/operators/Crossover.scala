@@ -50,7 +50,8 @@ object Crossover {
         val popIdx = pop.zipWithIndex.toVector
         val newPop = new ListBuffer[Genotype[T]]()
         for ((elem, i) <- popIdx) {
-            if (pop.length == i) {
+            val oddLength = pop.length % 2 == 1
+            if (oddLength && pop.length == (i + 1)) {
                 newPop += elem
             } else {
                 if (i % 2 == 0) {
