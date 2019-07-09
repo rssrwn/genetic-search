@@ -1,7 +1,6 @@
 package geneticsearch.operators
 
 import geneticsearch.Types.{CrossoverOp, GenotypePair, Population}
-import geneticsearch.Util.extractSuccess
 import geneticsearch.genotype.Genotype
 
 import scala.collection.mutable.ListBuffer
@@ -87,8 +86,8 @@ object Crossover {
             splitIdx
         }
 
-        val (g1Left, g1Right) = extractSuccess(g1.split(split))
-        val (g2Left, g2Right) = extractSuccess(g2.split(split))
+        val (g1Left, g1Right) = g1.split(split)
+        val (g2Left, g2Right) = g2.split(split)
 
         (g1Left.merge(g2Right), g2Left.merge(g1Right))
     }

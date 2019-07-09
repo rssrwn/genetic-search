@@ -2,7 +2,6 @@ package geneticsearch.operators
 
 import geneticsearch.Types.FitnessOp
 import geneticsearch.genotype.Genotype
-import geneticsearch.Util.extractSuccess
 
 
 object Fitness {
@@ -16,8 +15,8 @@ object Fitness {
       */
     def targetProximity[T](target: Genotype[T]): FitnessOp[T] = {
         genotype => {
-            val dist = extractSuccess(genotype.distance(target))
-            1 - dist
+            val dist = genotype.distance(target)
+            1.0 - dist
         }
     }
 

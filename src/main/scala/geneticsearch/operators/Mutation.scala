@@ -1,7 +1,7 @@
 package geneticsearch.operators
 
 import scala.util.Random
-import geneticsearch.Types.{EvalPopulation, MutationOp, Population}
+import geneticsearch.Types.{MutationOp, Population}
 
 
 /*
