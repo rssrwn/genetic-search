@@ -32,6 +32,9 @@ object Mutation {
         }
     }
 
+    // TODO what happens when same index gets generated twice
+    // TODO only allow each to be mutated at most once?
+
     /** Returns a function which will choose <numToMutate> genotypes randomly and mutate them
       *  Mutated genotypes are appended to the existing population
       * @param numToMutate Number of genotypes to be mutated (if greater than size of pop, all genotypes will be mutated)
@@ -67,6 +70,8 @@ object Mutation {
         }
     }
 
+    // TODO what happens when same index gets generated twice
+
     /** Returns a function which will choose <numToMutate> genotypes randomly and mutate them
       * Mutated genotypes replace their initial genotypes in the new population
       * @param numToMutate Number of genotypes to be mutated (if greater than size of pop, all genotypes will be mutated)
@@ -75,7 +80,7 @@ object Mutation {
       */
     def replaceWithMutated[T](numToMutate: Int): MutationOp[T] = {
         pop: Population[T] => {
-            val idxs = for (_ <- 0 until numToMutate) yield Random.nextInt(numToMutate - 1)
+            val idxs = for (_ <- 0 until numToMutate) yield Random.nextInt(pop.length)
             pop.zipWithIndex.map { case(genotype, idx) =>
                 if (idxs.contains(idx)) {
                     genotype.mutate()
