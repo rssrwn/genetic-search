@@ -1,7 +1,5 @@
 package geneticsearch.genotype
 
-import geneticsearch.Util.extractSuccess
-
 import org.scalatest.FunSuite
 
 
@@ -20,7 +18,7 @@ class SequenceTests extends FunSuite {
     }
 
     test("Splitting a Sequence creates two BinaryStrings correctly") {
-        val (left, right) = extractSuccess(genotype.split(1))
+        val (left, right) = genotype.split(1)
 
         val expectedLeftLen = 1
         val expectedRightLen = 4
@@ -36,7 +34,7 @@ class SequenceTests extends FunSuite {
     }
 
     test("Merging a split Sequence creates an equivalent Sequence") {
-        val (left, right) = extractSuccess(genotype.split(1))
+        val (left, right) = genotype.split(1)
 
         val newSeq = left.merge(right)
 

@@ -1,7 +1,5 @@
 package geneticsearch.algorithm
 
-import scala.util.Random
-import scala.collection.mutable.ListBuffer
 import geneticsearch.genotype.Genotype
 import geneticsearch.Types.Population
 

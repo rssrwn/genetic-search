@@ -15,7 +15,7 @@ class CrossoverTests extends FunSuite {
         val crossoverOp = Crossover.fitnessPairs[Int](4)
         val crossedPop = crossoverOp(pop)
 
-        val seqs = crossedPop.map(genotype => genotype.asInstanceOf[Sequence[Int]].elems)
+        val seqs = crossedPop.map(genotype => genotype.elems)
 
         val expectedHead = Seq(1,2,3,4,10)
         val expectedLast = Seq(16,17,18,19,15)
@@ -31,7 +31,7 @@ class CrossoverTests extends FunSuite {
         val crossoverOp = Crossover.fitnessPairs[Int]()
         val crossedPop = crossoverOp(pop)
 
-        val seqs = crossedPop.map(genotype => genotype.asInstanceOf[Sequence[Int]].elems)
+        val seqs = crossedPop.map(genotype => genotype.elems)
 
         val expectedHead = Seq(1,2,3,10)
         val expectedLast = Seq(7,8,9,4,5,6)
@@ -44,7 +44,7 @@ class CrossoverTests extends FunSuite {
         val crossoverOp = Crossover.randomPairs[Int](3)
         val crossedPop = crossoverOp(pop)
 
-        val seqs = crossedPop.map(genotype => genotype.asInstanceOf[Sequence[Int]].elems)
+        val seqs = crossedPop.map(genotype => genotype.elems)
         val sameStart = startsWith[Int](seqs, Seq(1,2,3))
 
         val expectedLength = 1
@@ -62,9 +62,7 @@ class CrossoverTests extends FunSuite {
         val crossoverOp = Crossover.randomPairs[Int](3)
 
         val crossedPops = pops.map(crossoverOp).map { pop =>
-            pop.map { genotype =>
-                genotype.asInstanceOf[Sequence[Int]].elems
-            }
+            pop.map(genotype => genotype.elems)
         }
 
         val crossZeroOne = Seq(1,2,3,9,10)
