@@ -9,6 +9,8 @@ Factory for mutation operators
  */
 object Mutation {
 
+    // TODO add gaussian mutation of each elem of genotype
+
     /**
       * Returns a function which will choose to randomly mutate genotypes with probability <mutationProb>
       * Mutated genotypes are appended to the existing population
@@ -38,13 +40,9 @@ object Mutation {
       */
     def appendMutatedPop[T](numToMutate: Int): MutationOp[T] = {
         pop: Population[T] => {
-            val idxs = for (_ <- 0 until numToMutate) yield Random.nextInt(numToMutate - 1)
-            val mutated = pop.zipWithIndex.flatMap { case(genotype, idx) =>
-                if (idxs.contains(idx)) {
-                    Some(genotype.mutate())
-                } else {
-                    None
-                }
+            val idxs = for (_ <- 0 until numToMutate) yield Random.nextInt(pop.length)
+            val mutated = idxs.map { idx =>
+                pop(idx).mutate()
             }
 
             pop ++ mutated

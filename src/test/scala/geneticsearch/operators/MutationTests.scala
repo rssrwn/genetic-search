@@ -6,14 +6,14 @@ import org.scalatest.FunSuite
 
 class MutationTests extends FunSuite {
 
-    private val mutFunc = geneticsearch.genotype.Mutation.multiplierMutation(1.0f, 0.1f)
+    private val mutFunc = geneticsearch.genotype.Mutation.multiplierMutation(0.5f, 0.1f)
 
     private val pop = new Sequence[Double](Seq(1,2,3,4,5), mutFunc, null) ::
             new Sequence[Double](Seq(6,7,8,9,10), mutFunc, null) ::
             new Sequence[Double](Seq(11,12,13,14,15), mutFunc, null) ::
             new Sequence[Double](Seq(16,17,18,19,20), mutFunc, null) :: Nil
 
-    test("appendMutated adds mutations of all genotypes when mutateProb is one") {
+    test("appendMutatedPop adds mutations of all genotypes when mutateProb is one") {
         val mutateProb = 1.0f
         val mutationOp = Mutation.appendMutatedPop[Double](mutateProb)
 
@@ -33,7 +33,7 @@ class MutationTests extends FunSuite {
         }
     }
 
-    test("appendMutate adds the correct number of mutations on average") {
+    test("appendMutatedPop adds the correct number of mutations on average") {
         def pop: List[Sequence[Double]] = new Sequence[Double](Seq(1,2,3,4,5), mutFunc, null) ::
                 new Sequence[Double](Seq(6,7,8,9,10), mutFunc, null) ::
                 new Sequence[Double](Seq(11,12,13,14,15), mutFunc, null) ::
@@ -56,6 +56,26 @@ class MutationTests extends FunSuite {
         val expectedRange = (numGenotypes * (mutateProb - error), numGenotypes * (mutateProb + error))
 
         assert(numMutations >= expectedRange._1 && numMutations <= expectedRange._2)
+    }
+
+    test("appendMutatedProb adds the correct number of mutations") {
+        val numToMutate = 3
+        val mutationOp = Mutation.appendMutatedPop[Double](numToMutate)
+
+        val mutatedPop = mutationOp(pop)
+
+        val vecs = mutatedPop.map(genotype => genotype.elems)
+
+        val expectedLength = 7
+        val expectedCount = 1
+
+        assertResult(expectedLength)(mutatedPop.length)
+
+        // Assert that each genotype has been mutated
+        for (vec <- vecs) {
+            val count = vecs.count(elems => elems == vec)
+            assertResult(expectedCount)(count)
+        }
     }
 
 }
