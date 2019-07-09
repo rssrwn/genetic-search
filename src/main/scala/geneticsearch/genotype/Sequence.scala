@@ -1,27 +1,30 @@
 package geneticsearch.genotype
 
-import geneticsearch.Types.{DistanceFunc, MutationFunc}
+import geneticsearch.Types.{DistanceFunc, GenotypePair, MutationFunc}
 
 import scala.util.{Failure, Success, Try}
 
 
-class Sequence[T](val elems: Seq[T], val mutFunc: MutationFunc[Sequence[T]], val distFunc: DistanceFunc[Sequence[T]]) extends Genotype[T] {
+class Sequence[T](seqElems: Seq[T], val mutFunc: MutationFunc[Sequence[T]], val distFunc: DistanceFunc[Sequence[T]]) extends Genotype[T] {
 
-    val vec: Vector[T] = elems.toVector
+    private val vec = seqElems.toVector
 
     def withElems(elems: Seq[T]): Sequence[T] = {
         new Sequence(elems, mutFunc, distFunc)
     }
 
-    // TODO dont return a try?
-    override def split(index: Int): Try[(Genotype[T], Genotype[T])] = {
+    override def elems: Vector[T] = {
+        vec
+    }
+
+    override def split(index: Int): GenotypePair[T] = {
         if (index >= length) {
             val message = "Split index cannot be larger or equal to the length of the BinaryString"
-            Failure(new java.lang.IndexOutOfBoundsException(message))
+            throw new IndexOutOfBoundsException(message)
         } else {
             val (l1, l2) = vec.splitAt(index)
             val listPair = (withElems(l1), withElems(l2))
-            Success(listPair)
+            listPair
         }
     }
 
@@ -35,11 +38,10 @@ class Sequence[T](val elems: Seq[T], val mutFunc: MutationFunc[Sequence[T]], val
         mutFunc(this)
     }
 
-    // TODO remove try
     // Must be called with a Sequence genotype
-    override def distance(that: Genotype[T]): Try[Float] = {
+    override def distance(that: Genotype[T]): Double = {
         val dist = distFunc(this, that.asInstanceOf[Sequence[T]])
-        Success(dist)
+        dist
     }
 
     override def length: Int = {
