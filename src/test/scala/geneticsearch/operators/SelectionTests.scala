@@ -10,7 +10,7 @@ class SelectionTests extends FunSuite {
     private val selection = Selection.selectBest[Int](numToSelect)
 
     private val pop = (new Sequence[Int](Seq(1,2,3), null, null) ::
-            new Sequence[Int](Seq(11,12,130), null, null) ::
+            new Sequence[Int](Seq(11,12,13), null, null) ::
             new Sequence[Int](Seq(21,22,23), null, null) :: Nil).toVector
 
     test("selectBest returns a pop of correct size") {

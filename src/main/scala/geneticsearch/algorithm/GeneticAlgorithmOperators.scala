@@ -1,12 +1,13 @@
 package geneticsearch.algorithm
 
-import geneticsearch.Types.{CrossoverOp, FitnessOp, MutationOp, SelectionOp}
+import geneticsearch.Types.{CompletionOp, CrossoverOp, FitnessOp, MutationOp, SelectionOp}
 
 
 class GeneticAlgorithmOperators[T](val fitnessOp: FitnessOp[T],
                                    val selectionOp: SelectionOp[T],
                                    val crossoverOp: CrossoverOp[T] = null,
-                                   val mutationOp: MutationOp[T] = null) {
+                                   val mutationOp: MutationOp[T] = null,
+                                   val completionOp: CompletionOp[T] = null) {
 
     def containsCrossoverOp: Boolean = {
         crossoverOp != null
@@ -14,6 +15,10 @@ class GeneticAlgorithmOperators[T](val fitnessOp: FitnessOp[T],
 
     def containsMutationOp: Boolean = {
         mutationOp != null
+    }
+
+    def containsCompletionOp: Boolean = {
+        completionOp != null
     }
 
 }

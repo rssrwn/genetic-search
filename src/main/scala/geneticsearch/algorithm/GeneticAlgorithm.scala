@@ -3,26 +3,39 @@ package geneticsearch.algorithm
 import geneticsearch.genotype.Genotype
 import geneticsearch.Types.{EvalPopulation, Population}
 
+import util.control.Breaks._
+
 
 class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
 
     def run(pop: Population[T]): Population[T] = {
         var curPop = pop
         for (_ <- 0 until numIter) {
-            val evalPop = select(curPop)
-            if (ops.containsCrossoverOp) {
-                curPop = crossover(evalPop)
+            val evalPop = evaluate(curPop)
+            if (ops.containsCompletionOp) {
+                val completed = ops.completionOp(evalPop)
+                if (completed) break
             }
+
+            val selectedEvalPop = select(evalPop)
+            if (ops.containsCrossoverOp) {
+                curPop = crossover(selectedEvalPop)
+            }
+
             if (ops.containsMutationOp) {
                 curPop = mutate(curPop)
             }
         }
+
         selectFittest(curPop)
     }
 
-    private def select(pop: Population[T]): EvalPopulation[T] = {
-        val eval = pop.map(genotype => (genotype, ops.fitnessOp(genotype)))
-        ops.selectionOp(eval)
+    private def evaluate(pop: Population[T]): EvalPopulation[T] = {
+        pop.map(genotype => (genotype, ops.fitnessOp(genotype)))
+    }
+
+    private def select(pop: EvalPopulation[T]): EvalPopulation[T] = {
+        ops.selectionOp(pop)
     }
 
     private def crossover(pop: EvalPopulation[T]): Population[T] = {

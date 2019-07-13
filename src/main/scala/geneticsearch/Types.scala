@@ -12,6 +12,7 @@ object Types {
     type MutationOp[T] = Population[T] => Population[T]
     type SelectionOp[T] = EvalPopulation[T] => EvalPopulation[T]
     type CrossoverOp[T] = Population[T] => Population[T]
+    type CompletionOp[T] = EvalPopulation[T] => Boolean
 
     type MutationFunc[T] = T => T
     type DistanceFunc[T] = (T, T) => Double
