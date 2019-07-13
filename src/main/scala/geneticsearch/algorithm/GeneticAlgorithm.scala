@@ -1,7 +1,7 @@
 package geneticsearch.algorithm
 
 import geneticsearch.genotype.Genotype
-import geneticsearch.Types.Population
+import geneticsearch.Types.{EvalPopulation, Population}
 
 
 class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
@@ -9,9 +9,9 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
     def run(pop: Population[T]): Population[T] = {
         var curPop = pop
         for (_ <- 0 until numIter) {
-            curPop = select(curPop)
+            val evalPop = select(curPop)
             if (ops.containsCrossoverOp) {
-                curPop = crossover(curPop)
+                curPop = crossover(evalPop)
             }
             if (ops.containsMutationOp) {
                 curPop = mutate(curPop)
@@ -20,14 +20,14 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
         selectFittest(curPop)
     }
 
-    private def select(pop: Population[T]): Population[T] = {
+    private def select(pop: Population[T]): EvalPopulation[T] = {
         val eval = pop.map(genotype => (genotype, ops.fitnessOp(genotype)))
         ops.selectionOp(eval)
     }
 
-    private def crossover(pop: Population[T]): Population[T] = {
-        // TODO sort by fitness
-        ops.crossoverOp(pop)
+    private def crossover(pop: EvalPopulation[T]): Population[T] = {
+        val sortedPop = pop.sortWith(_._2 > _._2).map(_._1)
+        ops.crossoverOp(sortedPop)
     }
 
     private def mutate(pop: Population[T]): Population[T] = {

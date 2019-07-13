@@ -14,7 +14,6 @@ object Selection {
     def selectBest[T](numToSelect: Int): SelectionOp[T] = {
         evalPop => {
             evalPop.sortWith(_._2 > _._2)
-                    .map(_._1)
                     .take(numToSelect)
         }
     }

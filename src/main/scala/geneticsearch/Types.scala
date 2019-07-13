@@ -10,7 +10,7 @@ object Types {
 
     type FitnessOp[T] = Genotype[T] => Double
     type MutationOp[T] = Population[T] => Population[T]
-    type SelectionOp[T] = EvalPopulation[T] => Population[T]
+    type SelectionOp[T] = EvalPopulation[T] => EvalPopulation[T]
     type CrossoverOp[T] = Population[T] => Population[T]
 
     type MutationFunc[T] = T => T
