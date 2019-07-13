@@ -8,22 +8,31 @@ import util.control.Breaks._
 
 class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
 
-    def run(pop: Population[T]): Population[T] = {
-        var curPop = pop
-        for (_ <- 0 until numIter) {
-            val evalPop = evaluate(curPop)
-            if (ops.containsCompletionOp) {
-                val completed = ops.completionOp(evalPop)
-                if (completed) break
-            }
+    // TODO use set (no duplicate genotypes)
+    // TODO add param which allows logging
+    def run(initPop: Population[T]): Population[T] = {
+        var curEvalPop: EvalPopulation[T] = evaluate(initPop)
+        var curPop: Population[T] = curEvalPop.map(_._1)
+        breakable {
+            for (_ <- 0 until numIter) {
+                curEvalPop = select(curEvalPop)
 
-            val selectedEvalPop = select(evalPop)
-            if (ops.containsCrossoverOp) {
-                curPop = crossover(selectedEvalPop)
-            }
+                if (ops.containsCompletionOp) {
+                    val completed = complete(curEvalPop)
+                    if (completed) break
+                }
 
-            if (ops.containsMutationOp) {
-                curPop = mutate(curPop)
+                curPop = curEvalPop.map(_._1)
+
+                if (ops.containsCrossoverOp) {
+                    curPop = crossover(curEvalPop)
+                }
+
+                if (ops.containsMutationOp) {
+                    curPop = mutate(curPop)
+                }
+
+                curEvalPop = evaluate(curPop)
             }
         }
 
@@ -45,6 +54,10 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
 
     private def mutate(pop: Population[T]): Population[T] = {
         ops.mutationOp(pop)
+    }
+
+    private def complete(pop: EvalPopulation[T]): Boolean = {
+        ops.completionOp(pop)
     }
 
     private def selectFittest(pop: Population[T]): Population[T] = {
