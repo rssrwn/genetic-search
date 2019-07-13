@@ -8,7 +8,7 @@ import scala.util.Random
 
 class MutationTests extends FunSuite {
 
-    private val binStr = new Sequence[Int](Seq(0,0,1,0,1), null, null)
+    private val binStr = new Sequence[Boolean](Seq(false, false, true, false, true), null, null)
 
     test("bitFlip should do nothing when flipProb is zero") {
         val flipFunc = bitFlip(0.0f)
@@ -23,7 +23,7 @@ class MutationTests extends FunSuite {
 
         val mutated = flipFunc(binStr)
 
-        val expected = Seq(1,1,0,1,0)
+        val expected = Seq(true, true, false, true, false)
 
         assertResult(expected)(mutated)
     }
@@ -31,8 +31,16 @@ class MutationTests extends FunSuite {
     test("bitFlip flips approx the correct number of bits") {
         val length = 5000
         val str = "10" * length
-        val elems = Seq.tabulate(5000)(idx => str(idx).toInt)
-        val binStr = new Sequence[Int](elems, null, null)
+        val elems = Seq.tabulate(5000) { idx =>
+            val int = str(idx).toInt
+            if (int == 0) {
+                false
+            } else {
+                true
+            }
+        }
+
+        val binStr = new Sequence[Boolean](elems, null, null)
 
         val flipProb = 0.2f
         val flipFunc = bitFlip(flipProb)
@@ -87,6 +95,64 @@ class MutationTests extends FunSuite {
         val mutProb = 0.2f
         val mult = 0.1f
         val mutFunc = multiplierMutation(mutProb, mult)
+        val mutated = mutFunc(seq)
+
+        val errorRate = 0.02f
+        val acceptanceRange = ((mutProb - errorRate) * length, (mutProb + errorRate) * length)
+
+        val numMutations = seq.zip(mutated).map { case(orig, mut) =>
+            if (orig == mut) {
+                0
+            } else {
+                1
+            }
+        }.sum
+
+        assert(numMutations >= acceptanceRange._1)
+        assert(numMutations <= acceptanceRange._2)
+    }
+
+    private val intSeq = new Sequence[Int](Seq(1,2,3,4,5), null, null)
+
+    test("incDecMutation mutates the correct number of values") {
+        val numToMutate = 3
+        val mutFunc = Mutation.incDecMutation(0, 5, numToMutate)
+
+        val mutated = mutFunc(intSeq)
+
+        val numMutations = intSeq.zip(mutated).map { case(orig, elem) =>
+            if (orig == elem) {
+                0
+            } else {
+                1
+            }
+        }.sum
+
+        assertResult(numToMutate)(numMutations)
+    }
+
+    test("incDecMutation keeps values between min and max") {
+        val binSeq = new Sequence[Int](Seq(1,1,0,1,0,1,1,0,0,1), null, null)
+
+        val mutFunc = Mutation.incDecMutation(0, 1, 10)
+
+        val mutated = mutFunc(binSeq)
+
+        for (elem <- mutated) {
+            assert(elem == 0 || elem == 1)
+        }
+    }
+
+    test("incDecMutation should mutate approx the correct number of elements") {
+        val min = 0
+        val max = 10
+        val length = 5000
+        val elems = Seq.tabulate(length)(_ => Random.nextInt(max + 1))
+
+        val seq = new Sequence[Int](elems, null, null)
+
+        val mutProb = 0.2f
+        val mutFunc = Mutation.incDecMutation(min, max, mutProb)
         val mutated = mutFunc(seq)
 
         val errorRate = 0.02f

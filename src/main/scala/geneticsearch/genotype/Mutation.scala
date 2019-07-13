@@ -13,22 +13,20 @@ object Mutation {
 
     // TODO add gaussian mutation of each elem of genotype
 
-    // TODO use BinaryString if created
-    // TODO use seq of bool for bin str?
     /**
       * Returns a function for mutating binary strings by flipping bits
       * @param flipProb probability of each bit being flipped
       * @return Mutation function
       */
-    def bitFlip(flipProb: Float): MutationFunc[Sequence[Int]] = {
+    def bitFlip(flipProb: Float): MutationFunc[Sequence[Boolean]] = {
         genotype => {
             val elems = genotype.map { bit =>
                 val rand = Random.nextFloat()
                 if (rand <= flipProb) {
-                    if (bit == 0) {
-                        1
+                    if (bit) {
+                        false
                     } else {
-                        0
+                        true
                     }
                 } else {
                     bit
@@ -72,11 +70,11 @@ object Mutation {
       * @param mutationProb The probability of each element in the genotype being mutated
       * @return Mutation function
       */
-    def intMutation(min: Int, max: Int, mutationProb: Float): MutationFunc[Sequence[Int]] = {
+    def incDecMutation(min: Int, max: Int, mutationProb: Float): MutationFunc[Sequence[Int]] = {
         genotype => {
             val newElems = genotype.map { elem =>
                 if (Random.nextFloat() <= mutationProb) {
-                    intMutateElem(elem, min, max)
+                    incDecMutateElem(elem, min, max)
                 } else {
                     elem
                 }
@@ -93,12 +91,12 @@ object Mutation {
       * @param numToMutate The number of elements to be mutated
       * @return Mutation function
       */
-    def intMutation(min: Int, max: Int, numToMutate: Int): MutationFunc[Sequence[Int]] = {
+    def incDecMutation(min: Int, max: Int, numToMutate: Int): MutationFunc[Sequence[Int]] = {
         genotype => {
             val idxs = Util.randPick(genotype.indices.toVector, numToMutate)
             val newElems = genotype.zipWithIndex.map { case(elem, idx) =>
                 if (idxs.contains(idx)) {
-                    intMutateElem(elem, min, max)
+                    incDecMutateElem(elem, min, max)
                 } else {
                     elem
                 }
@@ -108,7 +106,7 @@ object Mutation {
         }
     }
 
-    private def intMutateElem(elem: Int, min: Int, max: Int): Int = {
+    private def incDecMutateElem(elem: Int, min: Int, max: Int): Int = {
         if (elem == min) {
             elem + 1
         } else if (elem == max) {

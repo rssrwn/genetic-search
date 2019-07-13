@@ -1,6 +1,5 @@
 package geneticsearch.algorithm
 
-import geneticsearch.Types.MutationFunc
 import geneticsearch.genotype.{Distance, Sequence}
 import geneticsearch.operators.{Completion, Fitness, Mutation, Selection}
 import org.scalatest.FunSuite
@@ -29,7 +28,7 @@ class GeneticAlgorithmTests extends FunSuite {
         val numToMutate = 20
         val numColours = 6
         val seqLength = 4
-        val mutFunc = intMutation(0, 5)
+        val mutFunc = geneticsearch.genotype.Mutation.incDecMutation(0, 5, 1)
         val distFunc = Distance.euclideanInt()
 
         val pop = for (_ <- 0 until popSize) yield new Sequence[Int](randSeq(numColours, seqLength), mutFunc, distFunc)
@@ -51,34 +50,6 @@ class GeneticAlgorithmTests extends FunSuite {
 
     private def randSeq(max: Int, length: Int): Seq[Int] = {
         for (_ <- 0 until length) yield Random.nextInt(max)
-    }
-
-    private def intMutation(min: Int, max: Int): MutationFunc[Sequence[Int]] = {
-        genotype => {
-            val elems = genotype.elems
-            val length = elems.length
-            val rand = Random.nextInt(length)
-            val newElems = elems.zipWithIndex.map { case(elem, idx) =>
-                if (idx == rand) {
-                    if (elem == min) {
-                        elem + 1
-                    } else if (elem == max) {
-                        elem - 1
-                    } else {
-                        val inc = Random.nextFloat() >= 0.05
-                        if (inc) {
-                            elem + 1
-                        } else {
-                            elem - 1
-                        }
-                    }
-                } else {
-                    elem
-                }
-            }
-
-            genotype.withElems(newElems)
-        }
     }
 
 }

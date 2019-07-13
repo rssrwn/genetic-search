@@ -19,9 +19,9 @@ object Util {
             currPicks.toVector
         } else {
             val rand = Random.nextInt(nums.length)
-            val idx = nums(rand)
-            val newIdxs = nums.diff(Seq(rand))
-            randPickRec(newIdxs, idx :: currPicks, numToPick)
+            val num = nums(rand)
+            val newNums = nums.diff(Seq(num))
+            randPickRec(newNums, num :: currPicks, numToPick)
         }
     }
 

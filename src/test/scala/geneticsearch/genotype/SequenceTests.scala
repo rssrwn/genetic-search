@@ -5,11 +5,7 @@ import org.scalatest.FunSuite
 
 class SequenceTests extends FunSuite {
 
-    private val mutFunc = Mutation.bitFlip(0.2f)
-
-    private val distFunc = Distance.euclideanInt()
-
-    val genotype = new Sequence[Int](Seq(0,0,1,0,1), mutFunc, distFunc)
+    val genotype = new Sequence[Boolean](Seq(false, false, true, false, true), null, null)
 
     test("A Sequence has the expected length") {
         val expectedLength = 5
@@ -23,8 +19,8 @@ class SequenceTests extends FunSuite {
         val expectedLeftLen = 1
         val expectedRightLen = 4
 
-        val indexZero = 0
-        val indexFour = 1
+        val indexZero = false
+        val indexFour = true
 
         assertResult(expectedLeftLen)(left.length)
         assertResult(expectedRightLen)(right.length)

@@ -146,8 +146,8 @@ class MutationTests extends FunSuite {
         val mutatedPop = mutationOp(pop)
 
         val vecs = mutatedPop.map(genotype => genotype.elems)
-        val numMutated = vecs.map { vec =>
-            if (nonMutatedVecs.contains(vec)) {
+        val numMutated = pop.zip(vecs).map { case(orig, vec) =>
+            if (orig.elems == vec) {
                 0
             } else {
                 1
