@@ -46,7 +46,7 @@ object Crossover {
     If <splitIdx> is -1 use mid point of left genotype in pair as split index
      */
     private def crossoverPop[T](pop: Population[T], splitIdx: Int): Population[T] = {
-        val popIdx = pop.zipWithIndex.toVector
+        val popIdx = pop.zipWithIndex
         val newPop = new ListBuffer[Genotype[T]]()
         for ((elem, i) <- popIdx) {
             val oddLength = pop.length % 2 == 1
@@ -62,17 +62,16 @@ object Crossover {
             }
         }
 
-        newPop.toList
+        newPop.toVector
     }
 
     /*
     Shuffles the original pop by shuffling the indices and converting back to original elems
      */
     private def shufflePop[T](pop: Population[T]): Population[T] = {
-        val vec = pop.toVector
-        val indices = vec.map(elem => vec.indexOf(elem))
+        val indices = pop.map(elem => pop.indexOf(elem))
         val shuffle = Random.shuffle(indices)
-        shuffle.map(idx => vec(idx)).toList
+        shuffle.map(idx => pop(idx))
     }
 
     /*

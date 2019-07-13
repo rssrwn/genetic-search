@@ -4,10 +4,8 @@ import geneticsearch.genotype.Genotype
 
 object Types {
 
-    // TODO use vector instead of list
-
-    type Population[T] = List[Genotype[T]]
-    type EvalPopulation[T] = List[(Genotype[T], Double)]
+    type Population[T] = Vector[Genotype[T]]
+    type EvalPopulation[T] = Vector[(Genotype[T], Double)]
     type GenotypePair[T] = (Genotype[T], Genotype[T])
 
     type FitnessOp[T] = Genotype[T] => Double

@@ -2,10 +2,10 @@ package geneticsearch.genotype
 
 import geneticsearch.Types.{DistanceFunc, GenotypePair, MutationFunc}
 
-import scala.util.{Failure, Success, Try}
 
-
-class Sequence[T](seqElems: Seq[T], val mutFunc: MutationFunc[Sequence[T]], val distFunc: DistanceFunc[Sequence[T]]) extends Genotype[T] {
+class Sequence[T](seqElems: Seq[T],
+                  val mutFunc: MutationFunc[Sequence[T]],
+                  val distFunc: DistanceFunc[Sequence[T]]) extends Genotype[T] {
 
     private val vec = seqElems.toVector
 

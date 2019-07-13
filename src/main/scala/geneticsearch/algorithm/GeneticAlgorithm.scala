@@ -50,7 +50,7 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
                     curr
                 }
             }
-        })._1
+        })._1.toVector
     }
 
 }
