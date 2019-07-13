@@ -6,20 +6,46 @@ import geneticsearch.Types.{EvalPopulation, Population}
 import util.control.Breaks._
 
 
+/**
+  * A class for running a genetic search
+  * The search will stop either when numIters is over or when completionOp returns true, whichever is first
+  * @param ops An object for holding the operators the genetic algorithm uses
+  * @param numIter Number of iterations of the algorithm
+  * @tparam T Type of element within each genotype
+  */
 class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
 
-    // TODO use set (no duplicate genotypes)
     // TODO add param which allows logging
-    def run(initPop: Population[T]): Population[T] = {
+    /**
+      * Initiate a genetic search on a population
+      * @param initPop Initial population
+      * @param logging Describes the level of logging: -1 for off, 0 for logging just at start and end, other numbers
+      *                will log the same as 0 but print the genotype with highest fitness every <logging> iterations
+      * @return The genotype with the highest fitness (or more than one if joint highest)
+      */
+    def run(initPop: Population[T], logging: Int = 0): Population[T] = {
         var curEvalPop: EvalPopulation[T] = evaluate(initPop)
         var curPop: Population[T] = curEvalPop.map(_._1)
+
+        if (logging >= 0) {
+            println("Starting genetic search...")
+            println("Current population size is " + curPop.length)
+        }
+
+        var completed = false
+
         breakable {
-            for (_ <- 0 until numIter) {
+            for (iter <- 0 until numIter) {
                 curEvalPop = select(curEvalPop)
 
                 if (ops.containsCompletionOp) {
-                    val completed = complete(curEvalPop)
-                    if (completed) break
+                    if (complete(curEvalPop)) {
+                        if (logging >= 0) {
+                            println("Completed genetic search in " + (iter + 1) + " iterations")
+                        }
+                        completed = true
+                        break
+                    }
                 }
 
                 curPop = curEvalPop.map(_._1)
@@ -32,11 +58,33 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
                     curPop = mutate(curPop)
                 }
 
+                if (logging > 0 && iter % logging == 0) {
+                    val fittest = selectFittest(curPop)
+                    println("The following are the fittest genotypes on iteration " + (iter + 1) + ":")
+                    for (genotype <- fittest) {
+                        println(genotype)
+                    }
+                }
+
                 curEvalPop = evaluate(curPop)
             }
         }
 
-        selectFittest(curPop)
+        val fittest = selectFittest(curPop)
+
+        if (logging >= 0) {
+            if (!completed) {
+                println("Stopping genetic search due to iteration timeout")
+            }
+
+            println("Final population size is " + curPop.length)
+            println("The current fittest genotypes are:")
+            for (genotype <- fittest) {
+                println(genotype)
+            }
+        }
+
+        fittest
     }
 
     private def evaluate(pop: Population[T]): EvalPopulation[T] = {

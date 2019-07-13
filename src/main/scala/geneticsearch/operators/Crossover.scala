@@ -69,7 +69,7 @@ object Crossover {
     Shuffles the original pop by shuffling the indices and converting back to original elems
      */
     private def shufflePop[T](pop: Population[T]): Population[T] = {
-        val indices = pop.map(elem => pop.indexOf(elem))
+        val indices = pop.map(pop.indexOf)
         val shuffle = Random.shuffle(indices)
         shuffle.map(idx => pop(idx))
     }

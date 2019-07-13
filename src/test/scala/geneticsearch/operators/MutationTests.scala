@@ -138,8 +138,6 @@ class MutationTests extends FunSuite {
     }
 
     test("replaceWithMutated adds the correct number of mutations") {
-        val nonMutatedVecs = pop.map(genotype => genotype.elems)
-
         val numToMutate = 3
         val mutationOp = Mutation.replaceWithMutated[Double](numToMutate)
 
