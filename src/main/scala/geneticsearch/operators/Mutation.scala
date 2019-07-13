@@ -32,9 +32,6 @@ object Mutation {
         }
     }
 
-    // TODO what happens when same index gets generated twice
-    // TODO only allow each to be mutated at most once?
-
     /** Returns a function which will choose <numToMutate> genotypes randomly and mutate them
       *  Mutated genotypes are appended to the existing population
       * @param numToMutate Number of genotypes to be mutated (if greater than size of pop, all genotypes will be mutated)
@@ -70,17 +67,16 @@ object Mutation {
         }
     }
 
-    // TODO what happens when same index gets generated twice
-
     /** Returns a function which will choose <numToMutate> genotypes randomly and mutate them
       * Mutated genotypes replace their initial genotypes in the new population
+      * Each index can only be generated at most once for replacement
       * @param numToMutate Number of genotypes to be mutated (if greater than size of pop, all genotypes will be mutated)
       * @tparam T Type of the elements within each genotype
       * @return Mutation operator
       */
     def replaceWithMutated[T](numToMutate: Int): MutationOp[T] = {
         pop: Population[T] => {
-            val idxs = for (_ <- 0 until numToMutate) yield Random.nextInt(pop.length)
+            val idxs = generateIndices(pop.indices.toVector, Nil, numToMutate)
             pop.zipWithIndex.map { case(genotype, idx) =>
                 if (idxs.contains(idx)) {
                     genotype.mutate()
@@ -88,6 +84,17 @@ object Mutation {
                     genotype
                 }
             }
+        }
+    }
+
+    private def generateIndices(idxs: Vector[Int], currIdxs: List[Int], numIdxs: Int): Vector[Int] = {
+        if (numIdxs == currIdxs.length) {
+            currIdxs.toVector
+        } else {
+            val rand = Random.nextInt(idxs.length)
+            val idx = idxs(rand)
+            val newIdxs = idxs.diff(Seq(rand))
+            generateIndices(newIdxs, idx :: currIdxs, numIdxs)
         }
     }
 

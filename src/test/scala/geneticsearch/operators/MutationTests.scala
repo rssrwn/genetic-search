@@ -8,10 +8,10 @@ class MutationTests extends FunSuite {
 
     private val mutFunc = geneticsearch.genotype.Mutation.multiplierMutation(0.5f, 0.1f)
 
-    private val pop = new Sequence[Double](Seq(1,2,3,4,5), mutFunc, null) ::
-            new Sequence[Double](Seq(6,7,8,9,10), mutFunc, null) ::
-            new Sequence[Double](Seq(11,12,13,14,15), mutFunc, null) ::
-            new Sequence[Double](Seq(16,17,18,19,20), mutFunc, null) :: Nil
+    private val pop = new Sequence[Double](Seq(1,2,3,4,5,6,7,8,9,10), mutFunc, null) ::
+            new Sequence[Double](Seq(11,12,13,14,15,16,17,18,19,20), mutFunc, null) ::
+            new Sequence[Double](Seq(21,22,23,24,25,26,27,28,29,30), mutFunc, null) ::
+            new Sequence[Double](Seq(31,32,33,34,35,36,37,38,39,40), mutFunc, null) :: Nil
 
     test("appendMutatedPop adds mutations of all genotypes when mutateProb is one") {
         val nonMutatedVecs = pop.map(genotype => genotype.elems)
@@ -23,7 +23,6 @@ class MutationTests extends FunSuite {
 
         val vecs = mutatedPop.map(genotype => genotype.elems)
         val numMutated = vecs.map { vec =>
-            println("append: " + vec)
             if (nonMutatedVecs.contains(vec)) {
                 0
             } else {
@@ -63,7 +62,7 @@ class MutationTests extends FunSuite {
         assert(numMutations >= expectedRange._1 && numMutations <= expectedRange._2)
     }
 
-    test("appendMutatedProb adds the correct number of mutations") {
+    test("appendMutatedPob adds the correct number of mutations") {
         val nonMutatedVecs = pop.map(genotype => genotype.elems)
 
         val numToMutate = 3
@@ -148,7 +147,6 @@ class MutationTests extends FunSuite {
 
         val vecs = mutatedPop.map(genotype => genotype.elems)
         val numMutated = vecs.map { vec =>
-            println("replace: " + vec)
             if (nonMutatedVecs.contains(vec)) {
                 0
             } else {
