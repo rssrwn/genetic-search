@@ -2,14 +2,13 @@ package geneticsearch.operators
 
 import scala.util.Random
 import geneticsearch.Types.{MutationOp, Population}
+import geneticsearch.Util
 
 
-/*
-Factory for mutation operators
- */
+/**
+  * Factory for mutation operators
+  */
 object Mutation {
-
-    // TODO add gaussian mutation of each elem of genotype
 
     /**
       * Returns a function which will choose to randomly mutate genotypes with probability <mutationProb>
@@ -76,7 +75,7 @@ object Mutation {
       */
     def replaceWithMutated[T](numToMutate: Int): MutationOp[T] = {
         pop: Population[T] => {
-            val idxs = generateIndices(pop.indices.toVector, Nil, numToMutate)
+            val idxs = Util.randPick(pop.indices.toVector, numToMutate)
             pop.zipWithIndex.map { case(genotype, idx) =>
                 if (idxs.contains(idx)) {
                     genotype.mutate()
@@ -84,17 +83,6 @@ object Mutation {
                     genotype
                 }
             }
-        }
-    }
-
-    private def generateIndices(idxs: Vector[Int], currIdxs: List[Int], numIdxs: Int): Vector[Int] = {
-        if (numIdxs == currIdxs.length) {
-            currIdxs.toVector
-        } else {
-            val rand = Random.nextInt(idxs.length)
-            val idx = idxs(rand)
-            val newIdxs = idxs.diff(Seq(rand))
-            generateIndices(newIdxs, idx :: currIdxs, numIdxs)
         }
     }
 
