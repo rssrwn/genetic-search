@@ -1,0 +1,4 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mSequenceTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A Sequence has the expected length[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Splitting a Sequence creates two BinaryStrings correctly[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Merging a split Sequence creates an equivalent Sequence[0m[0m

@@ -1,0 +1,10 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mMutationTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- bitFlip should do nothing when flipProb is zero[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- bitFlip should flip all bits when flipProb is one[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- bitFlip flips approx the correct number of bits[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- multiplierMutation should do nothing when mutationProb is zero[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- multiplierMutation should change all elems by the correct amount when mutationProb is one[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- multiplierMutation should alter approx the correct number of elements[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- incDecMutation mutates the correct number of values[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- incDecMutation keeps values between min and max[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- incDecMutation should mutate approx the correct number of elements[0m[0m

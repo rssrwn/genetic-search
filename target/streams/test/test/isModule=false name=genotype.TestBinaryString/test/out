@@ -1,0 +1,5 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mTestBinaryString:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A BinaryString has the expected length[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- A BinaryString ignores non-binary chars[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Splitting a BinaryString creates two BinaryStrings correctly[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- Merging a split BinaryString creates an equivalent BinaryString[0m[0m

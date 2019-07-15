@@ -1,0 +1,8 @@
+[0m[[0m[31merror[0m] [0m[0m/Users/Ross/Documents/Programming/genetic-search/src/test/scala/geneticsearch/genotype/SequenceTests.scala:12:54: type mismatch;[0m
+[0m[[0m[31merror[0m] [0m[0m found   : geneticsearch.Types.MutationFunc[geneticsearch.genotype.Sequence[Boolean]][0m
+[0m[[0m[31merror[0m] [0m[0m    (which expands to)  geneticsearch.genotype.Sequence[Boolean] => geneticsearch.genotype.Sequence[Boolean][0m
+[0m[[0m[31merror[0m] [0m[0m required: geneticsearch.Types.MutationFunc[geneticsearch.genotype.Sequence[Int]][0m
+[0m[[0m[31merror[0m] [0m[0m    (which expands to)  geneticsearch.genotype.Sequence[Int] => geneticsearch.genotype.Sequence[Int][0m
+[0m[[0m[31merror[0m] [0m[0m    val genotype = new Sequence[Int](Seq(0,0,1,0,1), mutFunc, distFunc)[0m
+[0m[[0m[31merror[0m] [0m[0m                                                     ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

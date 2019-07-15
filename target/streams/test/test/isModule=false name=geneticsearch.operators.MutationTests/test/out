@@ -1,0 +1,7 @@
+[0m[[0m[0minfo[0m] [0m[0m[32mMutationTests:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- appendMutatedPop adds mutations of all genotypes when mutateProb is one[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- appendMutatedPop adds the correct number of mutations on average[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- appendMutatedPob adds the correct number of mutations[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- replaceWithMutated replaces all genotypes when mutateProb is one[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- replaceWithMutated mutates the correct number on average[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- replaceWithMutated adds the correct number of mutations[0m[0m

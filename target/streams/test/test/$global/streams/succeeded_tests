@@ -1,0 +1,14 @@
+#Successful Tests
+#Sun Jul 14 00:48:29 BST 2019
+geneticsearch.genotype.BinaryStringTests=1561840251966
+geneticsearch.genotype.MutationTests=1563061709405
+geneticsearch.genotype.DistanceTests=1563061709349
+geneticsearch.operators.MutationTests=1563061709890
+geneticsearch.genotype.TestBinaryString=1560890229016
+geneticsearch.algorithm.GeneticAlgorithmTests=1563061709519
+geneticsearch.operators.SelectionTests=1563061709353
+genotype.TestBinaryString=1560372879004
+geneticsearch.operators.CrossoverTests=1563061709826
+geneticsearch.operators.CompletionTests=1563061709413
+geneticsearch.genotype.SequenceTests=1563061709459
+geneticsearch.operators.FitnessTests=1563061709432

@@ -1,0 +1,1 @@
+["geneticsearch.operators.CompletionTests","geneticsearch.operators.FitnessTests","geneticsearch.operators.SelectionTests","geneticsearch.genotype.MutationTests","geneticsearch.genotype.DistanceTests","geneticsearch.operators.CrossoverTests","geneticsearch.operators.MutationTests","geneticsearch.genotype.SequenceTests","geneticsearch.algorithm.GeneticAlgorithmTests"]
