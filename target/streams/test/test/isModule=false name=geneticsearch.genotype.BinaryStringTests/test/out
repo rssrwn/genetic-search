@@ -1,8 +1,0 @@
-[0m[[0m[0minfo[0m] [0m[0m[32mBinaryStringTests:[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- A BinaryString has the expected length[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- A BinaryString ignores non-binary chars[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- Splitting a BinaryString creates two BinaryStrings correctly[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- Merging a split BinaryString creates an equivalent BinaryString[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- Mutating a binaryString should do nothing when flipProb is zero[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- Mutating a binaryString should flip all bits when flipProb is one[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- Mutating a binaryString flips approx the correct number of bits[0m[0m

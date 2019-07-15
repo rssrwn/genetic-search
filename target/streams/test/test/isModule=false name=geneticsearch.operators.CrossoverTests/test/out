@@ -1,5 +1,0 @@
-[0m[[0m[0minfo[0m] [0m[0m[32mCrossoverTests:[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- fitnessPairs crossover operator crosses neighbouring genotypes[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- fitnessPairs crossover operator splits at default value of half length of genotype[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- randomPairs crossover operator crosses with only one other genotype[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- randomPairs crossover operator crosses with other genotypes with equal probability[0m[0m

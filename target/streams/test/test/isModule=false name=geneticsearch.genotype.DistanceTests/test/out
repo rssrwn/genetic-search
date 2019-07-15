@@ -1,5 +1,0 @@
-[0m[[0m[0minfo[0m] [0m[0m[32mDistanceTests:[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- hamming distance between two equal binary strings is zero[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- hamming distance function gives expected distances[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- euclidean distance is zero for two identical Sequences[0m[0m
-[0m[[0m[0minfo[0m] [0m[0m[32m- euclidean distance gives expected distances[0m[0m
