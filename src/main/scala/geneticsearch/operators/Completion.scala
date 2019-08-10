@@ -18,4 +18,15 @@ object Completion {
         }
     }
 
+    /**
+      * Returns a completion operator which will return true if a genotype's fitness is gre <threshold>
+      * @param threshold The fitness threshold for the search to be completed
+      * @return Completion operator
+      */
+    def scoreThreshold[T](threshold: Double): CompletionOp[T] = {
+        evalPop => {
+            evalPop.exists(evalGenotype => evalGenotype._2 >= threshold)
+        }
+    }
+
 }
