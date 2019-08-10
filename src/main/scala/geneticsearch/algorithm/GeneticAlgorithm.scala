@@ -15,7 +15,6 @@ import util.control.Breaks._
   */
 class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
 
-    // TODO add param which allows logging
     /**
       * Initiate a genetic search on a population
       * @param initPop Initial population
@@ -88,7 +87,12 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
     }
 
     private def evaluate(pop: Population[T]): EvalPopulation[T] = {
-        pop.map(genotype => (genotype, ops.fitnessOp(genotype)))
+        pop.map { genotype =>
+            Executor.submit(genotype, ops.fitnessOp(genotype))
+        }.map { future =>
+            // This will wait for future to return (possibly forever)
+            Executor.await(future)
+        }
     }
 
     private def select(pop: EvalPopulation[T]): EvalPopulation[T] = {
@@ -109,17 +113,17 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
     }
 
     private def selectFittest(pop: Population[T]): Population[T] = {
-        pop.foldLeft((List.empty[Genotype[T]], 0.0))((curr, genotype) => {
+        pop.foldLeft((Set.empty[Genotype[T]], Double.MinValue: Double))((curr, genotype) => {
             val (fittest, bestFitness) = curr
             val fitness = ops.fitnessOp(genotype)
 
             if (fittest.isEmpty) {
-                (genotype :: fittest, fitness)
+                (fittest + genotype, fitness)
             } else {
                 if (fitness > bestFitness) {
-                    (genotype :: Nil, fitness)
+                    (Set(genotype), fitness)
                 } else if (bestFitness == fitness) {
-                    (genotype :: fittest, bestFitness)
+                    (fittest + genotype, bestFitness)
                 } else {
                     curr
                 }
