@@ -37,7 +37,7 @@ class GeneticAlgorithm[T](ops: GeneticAlgorithmOperators[T], numIter: Int) {
             for (iter <- 0 until numIter) {
                 curEvalPop = select(curEvalPop)
 
-                if (ops.containsCompletionOp) {
+                if (ops.containsCompletionOp && iter % ops.completionCheckIter == 0) {
                     if (complete(curEvalPop)) {
                         if (logging >= 0) {
                             println("Completed genetic search in " + (iter + 1) + " iterations")

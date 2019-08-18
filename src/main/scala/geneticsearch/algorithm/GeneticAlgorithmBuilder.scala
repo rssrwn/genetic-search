@@ -11,6 +11,7 @@ class GeneticAlgorithmBuilder[T] {
     private var crossoverOp: CrossoverOp[T] = _
     private var mutationOp: MutationOp[T] = _
     private var completionOp: CompletionOp[T] = _
+    private var completionCheckIter: Int = _
 
     def build(): GeneticAlgorithm[T] = {
         val ops = new GeneticAlgorithmOperators[T](fitnessOp, selectionOp, crossoverOp, mutationOp, completionOp)
@@ -42,8 +43,9 @@ class GeneticAlgorithmBuilder[T] {
         this
     }
 
-    def withCompletionOp(op: CompletionOp[T]): GeneticAlgorithmBuilder[T] = {
+    def withCompletionOp(op: CompletionOp[T], checkIter: Int = 1): GeneticAlgorithmBuilder[T] = {
         completionOp = op
+        completionCheckIter = checkIter
         this
     }
 
