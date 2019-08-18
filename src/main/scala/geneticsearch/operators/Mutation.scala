@@ -3,6 +3,7 @@ package geneticsearch.operators
 import scala.util.Random
 import geneticsearch.Types.{MutationOp, Population}
 import geneticsearch.Util
+import geneticsearch.algorithm.Executor
 
 
 /**
@@ -19,12 +20,16 @@ object Mutation {
       */
     def appendMutatedPop[T](mutationProb: Float): MutationOp[T] = {
         pop: Population[T] => {
-            val mutated = pop.flatMap { genotype =>
-                if (Random.nextFloat() <= mutationProb) {
-                    Some(genotype.mutate())
-                } else {
-                    None
+            val mutated = pop.map { genotype =>
+                Executor.submit {
+                    if (Random.nextFloat() <= mutationProb) {
+                        Some(genotype.mutate())
+                    } else {
+                        None
+                    }
                 }
+            }.flatMap { future =>
+                Executor.await(future)
             }
 
             pop ++ mutated
@@ -41,7 +46,11 @@ object Mutation {
         pop: Population[T] => {
             val idxs = for (_ <- 0 until numToMutate) yield Random.nextInt(pop.length)
             val mutated = idxs.map { idx =>
-                pop(idx).mutate()
+                Executor.submit {
+                    pop(idx).mutate()
+                }
+            }.map { future =>
+                Executor.await(future)
             }
 
             pop ++ mutated
@@ -57,11 +66,15 @@ object Mutation {
     def replaceWithMutated[T](mutationProb: Float): MutationOp[T] = {
         pop: Population[T] => {
             pop.map { genotype =>
-                if (Random.nextFloat() <= mutationProb) {
-                    genotype.mutate()
-                } else {
-                    genotype
+                Executor.submit {
+                    if (Random.nextFloat() <= mutationProb) {
+                        genotype.mutate()
+                    } else {
+                        genotype
+                    }
                 }
+            }.map { future =>
+                Executor.await(future)
             }
         }
     }
@@ -77,11 +90,15 @@ object Mutation {
         pop: Population[T] => {
             val idxs = Util.randPick(pop.indices.toVector, numToMutate)
             pop.zipWithIndex.map { case(genotype, idx) =>
-                if (idxs.contains(idx)) {
-                    genotype.mutate()
-                } else {
-                    genotype
+                Executor.submit {
+                    if (idxs.contains(idx)) {
+                        genotype.mutate()
+                    } else {
+                        genotype
+                    }
                 }
+            }.map { future =>
+                Executor.await(future)
             }
         }
     }
